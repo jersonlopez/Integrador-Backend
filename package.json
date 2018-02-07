@@ -4,14 +4,17 @@
   "description": "software for loan and reserve sports equipment",
   "main": "app.js",
   "repository": "https://github.com/jersonlopez/Integrador.git",
-  "author": "jersonlopez <jersonlopez.1204@gmail.com>, sergiocastri <> johnagaleano<john.galenanoc@gmail.com>",
+  "author": "jersonlopez <jersonlopez.1204@gmail.com>, sergiocastri <scastrillon347@gmail.com> johnagaleano<john.galenanoc@gmail.com>",
   "license": "MIT",
   "scripts": {
     "dev": "Dev=true nodemon app.js ",
     "prod": "node app.js"
   },
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "express": "^4.16.2",
+    "mongoose": "^5.0.3",
     "morgan": "^1.9.0"
   },
   "devDependencies": {
