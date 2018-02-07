@@ -1,2 +1,2 @@
 # Integrador
-sistema de gestion de pretamo de implementos deportivos
+sistema de gestion de prestamo de implementos deportivos
