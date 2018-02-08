@@ -1,5 +1,5 @@
 {
-  "name": "PrestemosUdeA",
+  "name": "prestemosudea",
   "version": "1.0.0",
   "description": "software for loan and reserve sports equipment",
   "main": "app.js",
@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "test": "standard --fix",
-    "dev": "Dev=true nodemon app.js ",
+    "dev": "Dev=true nodemon app.js --exec 'npm run test' ",
     "prod": "node app.js"
   },
   "dependencies": {
