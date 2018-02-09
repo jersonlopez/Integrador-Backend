@@ -1,8 +1,4 @@
-/* jshint esversion: 6 */
-
 const express = require('express')
-
-const config = require('./config')
 
 let app = new express()
 

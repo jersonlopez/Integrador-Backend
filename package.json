@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "test": "standard --fix",
-    "dev": "Dev=true nodemon app.js --exec 'npm run test' ",
+    "dev": "Dev=true nodemon app.js",
     "prod": "node app.js"
   },
   "dependencies": {

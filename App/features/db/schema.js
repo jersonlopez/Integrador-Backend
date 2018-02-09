@@ -4,7 +4,7 @@ let inventorySchemaJSON = {
   inventory: [{}]
 }
 
-function getInventorySchema () {
+function getInventorySchema() {
   return inventorySchemaJSON
 }
 
@@ -13,7 +13,7 @@ let implementsSchemaJSON = { // estructura del esquema, en formato json, excelen
   quantity: Number
 }
 
-function getImplementsSchema () {
+function getImplementsSchema() {
   return implementsSchemaJSON
 }
 
