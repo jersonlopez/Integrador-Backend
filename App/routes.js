@@ -6,10 +6,6 @@ let util = require('./features/db/route')  // Se requiere el el modulo queries q
 
 let router = new Router()
 
-//router.post('/v1/saveImplement', util.saveImplements)
-
-// router.get('/v1/getAllImplements', util.getAllImplements)
-
 router.use('/v1', util)
 
 module.exports = router

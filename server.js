@@ -1,15 +1,15 @@
 /* jshint esversion: 6 */
 
 const morgan = require('morgan')
-let cors = require('cors')
-// const bodyParser = require('body-parser');
+const cors = require('cors')
+const bodyParser = require('body-parser');
 const config = require('./config')
 const routes = require('./App/routes')
 
 module.exports = (app) => {
   app.set('port', config.port)
-    /* app.use(bodyParser.urlencoded({extend: true}));
-    app.use(bodyParser.json()); */
+  app.use(bodyParser.urlencoded({extend: true}));
+  app.use(bodyParser.json());
   app.use(morgan(config.morganMode))
 
   app.use(cors())
