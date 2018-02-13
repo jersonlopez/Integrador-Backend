@@ -3,7 +3,7 @@ let app = require('../server.js');
 let supertest = require('supertest');
 let	chai = require('chai');
 let chaiHttp = require('chai-http');
-var model = require('./App/features/db/model.js');
+//var model = require('./App/features/db/implemet/model');
 
 var request = supertest(app);
 var expect = chai.expect;

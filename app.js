@@ -1,6 +1,6 @@
 const express = require('express')
 
-var app = new express()
+let app = new express()
 
 require('./server')(app)
 
