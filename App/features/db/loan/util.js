@@ -1,20 +1,17 @@
 let modelLoan = require('./model')
-let modelDevolution = require('../features/db/devolution/model') //revisar ruta
-let json;
+let modelDevolution = require('../devolution/model') //revisar ruta
 
 devolution = modelDevolution.getDevolution()
 loan = modelLoan.getLoan()
 
 function getSanction(req, res) {  //getDevolution?&&id=123456   METODO get devuelve un json con la fecha del ultimo prestamo (implemento a devolver) tipo de implemento id.
- devolution.find({id: req.query.id}, '-_id -__v -attendant -typeImplement -observation', function(err, doc) {                                                                
-      let sizeDoc = doc.length;
-      if(sizeDoc !== 0) {        
-        json = doc[sizeDoc];  
-        if(json.timeSanction > 0){
-          res.send("USUARIO SANCIONADO");
-        }else{
-           return;
-        }                                                                                                                            
+  let sanctionTime;
+  devolution.find({id: req.query.id}, '-_id -__v -attendant -typeImplement -observation', function(err, doc) {                                               
+      if(doc.length > 0) {     
+        if(parseInt(doc[doc.length - 1].timeSanction) > 0){
+          sanctionTime = Math.floor((parseInt(doc[doc.length - 1].timeSanction)/86400000) +1);
+          res.send("USUARIO SANCIONADO; aun tiene " + sanctionTime + " Dias de sancion");
+        }                                                                                                                         
       }
       res.send("Usuario NO sancionado");
   });
@@ -24,7 +21,7 @@ function getSanction(req, res) {  //getDevolution?&&id=123456   METODO get devue
 function saveLoan(req, res) { 
   let newLoan = new loan({
     id: req.body.id,name: req.body.name, typeImplement: req.body.typeImplement, faculty: req.body.faculty,
-    phone: req.body.phone, serviceRendered : req.body.serviceRendered, attendant: req.body.attendant, loanDate: new Date()
+    phone: req.body.phone, serviceRendered : req.body.serviceRendered, attendant: req.body.attendant, loanDate: new Date().getTime()
   })
 
   newLoan.save(function () {

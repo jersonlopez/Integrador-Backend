@@ -5,6 +5,7 @@ let devolutionSchemaJSON = {
     typeImplement: String,
     observation: String,
     attendant: String,
+    loanDate: String,
     timeSanction: String
   }
   
