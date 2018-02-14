@@ -11,15 +11,15 @@ function close () {
   moon.close()
 }
 
-let sanctionSchema = new schema(schemas.getSanctionSchema())  // Creacion del esquema como tal
+let devolutionSchema = new schema(schemas.getDevolutionSchema())  // Creacion del esquema como tal
 
-let sanction = mongoose.model('Sanction', sanctionSchema)  // creacion del modelo, este es que conecta con la bd, se le pasa el esquema de la tabla a//Creacion del esquema como tal
+let devolution = mongoose.model('Devolution', devolutionSchema)  // creacion del modelo, este es que conecta con la bd, se le pasa el esquema de la tabla a//Creacion del esquema como tal
 
-function getSanction () {
-  return sanction
+function getDevolution () {
+  return devolution
 }
 
 module.exports = { // Exporta todos los modelos
-  getSanction: getSanction,
+  getDevolution: getDevolution,
   close: close
 }
