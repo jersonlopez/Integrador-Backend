@@ -20,12 +20,11 @@ function getSanction(req, res) {  //getLoan/?id=123456   METODO get devuelve un 
     "loanDate": 1519620089224"
 }*/
 
-
 function saveDevolution(req, res) {   //metodo post 
   let loanDate = req.body.loanDate;
   let returnDate = (new Date()).getTime();
   let sanction, sanctionTime;
-  if((returnDate - loanDate) > 86400000){ //milisegundo en un dia
+  if((returnDate - loanDate) > 86400000){ //milisegundo en un dia  CAMBIAAAA
     sanction = (returnDate - loanDate) * 5;
   }else{
     sanction = 0;
@@ -37,7 +36,7 @@ function saveDevolution(req, res) {   //metodo post
   if (sanction > 0){
     sanctionTime = Math.floor((sanction/86400000) +1);
     newDevolution.save(function () {
-      res.send("Devolucion efectuada exitosamente SANCION DE: " + sanctionTime + "dias."/*+ newImplement*/)
+      res.send("Devolucion efectuada exitosamente, SANCION DE: " + sanctionTime + " dias."/*+ newImplement*/)
     })
   }else{
     newDevolution.save(function () {
