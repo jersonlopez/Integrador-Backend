@@ -1,7 +1,7 @@
 /* jshint esversion: 6 */
 
 let userSchemasJSON = {
-    name: String,
+    id: String,
     password: String,
     job: String
   }
