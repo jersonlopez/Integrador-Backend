@@ -1,4 +1,6 @@
 let java = require("java");
+
+
 java.classpath.push("/libs_java/log4j-1.2.9.jar");
 java.classpath.push("/libs_java/commons.collections-3.2.1.jar");
 java.classpath.push("/libs_java/commons-beanutils-1.7.0.jar");
@@ -16,7 +18,6 @@ java.classpath.push("/libs_java/OrgSistemasSecurity.jar");
     
   }
 };*/
-
 
 
 let OrgSistemasWebServiceClient = java.import("co.edu.udea.wsClient.OrgSistemasWebServiceClient");
