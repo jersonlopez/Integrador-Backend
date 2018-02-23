@@ -3,7 +3,8 @@
 let registerSchemaJSON = { 
     typeImplement: String,
     quantityLoan: Number,
-    quantityDevolution: Number
+    quantityDevolution: Number,
+    quantityServiceRendered: Number
   }
   
   function getRegisterSchema () {
