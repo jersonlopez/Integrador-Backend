@@ -1,9 +1,10 @@
-const Router = require('express').Router
+const Router = require('express').Router   ////NO HACE NADA YA ESTE ARCHIVO ; SE PUEDE BORRAR PERO AUN NO
 
 const utilImplement = require('./implement/util')
 const utilUser = require('./user/util');
 const utilLoan = require('./loan/util');
 const utilDevolution = require('./devolution/util')
+const utilRegister = require('./register/util')
 
 let router = new Router()
 
@@ -32,6 +33,11 @@ router.route('/getAllImplements')
   .get((...args) => {
     utilImplement.getAllImplements(...args)
   })
+
+router.route('/getAllRegister')
+  .get((...args) => {
+    utilRegister.getAllRegister(...args)
+})
 
 router.route('/getLoan')
   .get((...args) => {

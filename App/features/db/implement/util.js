@@ -1,9 +1,12 @@
-let model = require('./model')
+let modelImplement = require('./model')
+let modelRegister = require('../register/model')
 
-implement = model.getImplements()
+implement = modelImplement.getImplements()
+register = modelRegister.getRegister()
 
 function saveImplements(req, res) { // función para guardar implemento
-  implement.find( {typeImplement: req.body.typeImplement}, '-_id -__v', function (err, doc) {   //// PROBARRRRRR
+  implement.find( {typeImplement: req.body.typeImplement}, '-_id -__v', function (err, doc) {
+  if(doc.length !== 0){
     let updateQuantity;
     let oldQuantity;
     oldQuantity = doc[0].quantity;
@@ -15,7 +18,21 @@ function saveImplements(req, res) { // función para guardar implemento
       res.send("Actualizada cantidad de " + req.body.typeImplement /*+ newImplement*/)
     })
     implement.findOneAndRemove({typeImplement:req.body.typeImplement, quantity: oldQuantity}, function(err) {
-    });  
+    });
+  }else{
+    let Implement = new implement({
+      typeImplement : req.body.typeImplement, quantity : req.body.quantity
+    })
+    Implement.save(function () {
+    })
+    let Register = new register({
+      typeImplement: req.body.typeImplement, quantityLoan: 0, quantityDevolution: 0, quantityServiceRendered: 0
+    })
+    Register.save(function () {
+      res.send("Implemento guardado exitosamente")
+    })
+  } 
+  
   });
 };
 

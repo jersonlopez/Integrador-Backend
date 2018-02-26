@@ -1,8 +1,10 @@
 let modelDevolution = require('./model')
 let modelLoan = require('../loan/model')
+let modelRegister = require('../register/model')
 
 devolution = modelDevolution.getDevolution()
 loan = modelLoan.getLoan()
+register = modelRegister.getRegister()
 
 function getSanction(req, res) {  //getLoan/?id=123456   METODO get devuelve un json con la fecha del ultimo prestamo (implemento a devolver) tipo de implemento id.
  loan.find({id: req.query.id}, '-_id -__v -name -faculty -phone -serviceRendered -attendant', function(err, doc) {                                                                
@@ -21,6 +23,7 @@ function getSanction(req, res) {  //getLoan/?id=123456   METODO get devuelve un 
 }*/
 
 function saveDevolution(req, res) {   //metodo post 
+  let oldDevolution;
   let loanDate = req.body.loanDate;
   let returnDate = (new Date()).getTime();
   let sanction, sanctionTime;
@@ -33,6 +36,18 @@ function saveDevolution(req, res) {   //metodo post
     id: req.body.id, typeImplement: req.body.typeImplement, observation: req.body.observation, attendant: req.body.attendant,
     timeSanction: sanction
   })
+  register.find({typeImplement: req.body.typeImplement}, '-_id -__v', function(err, doc){
+    oldDevolution = doc[0].quantityDevolution;
+    let newRegister = new register({
+      typeImplement: req.body.typeImplement, quantityLoan: doc[0].quantityLoan,
+      quantityDevolution: oldDevolution + 1, quantityServiceRendered: doc[0].quantityServiceRendered
+    })
+    newRegister.save(function () {
+    })
+    register.findOneAndRemove({typeImplement:req.body.typeImplement, quantityDevolution: oldDevolution}, function(err) {
+    });
+  });
+
   if (sanction > 0){
     sanctionTime = Math.floor((sanction/86400000) +1);
     newDevolution.save(function () {
@@ -40,12 +55,19 @@ function saveDevolution(req, res) {   //metodo post
     })
   }else{
     newDevolution.save(function () {
-      res.send("Devolucion efectuada exitosamente" /*+ newImplement*/)
+      res.send("Devolucion efectuada exitosamente")
     })
   }
 };
 
+function getAllDevolution(req, res) {
+  devolution.find({}, '-_id -__v', function (err, doc) {
+    res.status(200).jsonp(doc)
+  })
+}
+
 module.exports = {
     getSanction : getSanction,
-    saveDevolution : saveDevolution
+    saveDevolution : saveDevolution, 
+    getAllDevolution : getAllDevolution
   }
