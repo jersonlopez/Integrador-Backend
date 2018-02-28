@@ -15,7 +15,7 @@ function saveImplements(req, res) { // función para guardar implemento
       typeImplement : req.body.typeImplement, quantity : updateQuantity
     })
     Implement.save(function () {
-      res.send("Actualizada cantidad de " + req.body.typeImplement /*+ newImplement*/)
+      res.send("Actualizada cantidad de " + req.body.typeImplement)
     })
     implement.findOneAndRemove({typeImplement:req.body.typeImplement, quantity: oldQuantity}, function(err) {
     });
@@ -36,15 +36,23 @@ function saveImplements(req, res) { // función para guardar implemento
   });
 };
 
-
-
 function getAllImplements (req, res) {
   implement.find({}, '-_id -__v', function (err, doc) {
     res.status(200).jsonp(doc)
   })
 };
 
+
+function deleteImplement(req, res){
+  implement.findOneAndRemove({typeImplement:req.body.typeImplement}, function(err) {
+    if(!err) {
+        res.send("Implemento eliminado correctamente");
+    } 
+  });
+}
+
 module.exports = { // Exporta todos los metodos
   saveImplements: saveImplements,
-  getAllImplements: getAllImplements
+  getAllImplements: getAllImplements,
+  deleteImplement: deleteImplement
 }
