@@ -1,17 +1,40 @@
-let model = require('./model')
+let modelImplement = require('./model')
+let modelRegister = require('../register/model')
 
-implement = model.getImplements()
+implement = modelImplement.getImplements()
+register = modelRegister.getRegister()
 
-function saveImplements (req, res) { // función para guardar implemento
-  let newImplement = new implement({
-    typeImplement: req.body.typeImplement, quantity: req.body.quantity
-  })
-
-  newImplement.save(function () {
-    res.send("Implemento registrado exitosamente" /*+ newImplement*/)
-  })
+function saveImplements(req, res) { // función para guardar implemento
+  implement.find( {typeImplement: req.body.typeImplement}, '-_id -__v', function (err, doc) {
+  if(doc.length !== 0){
+    let updateQuantity;
+    let oldQuantity;
+    oldQuantity = doc[0].quantity;
+    updateQuantity = doc[0].quantity + req.body.quantity;
+    let Implement = new implement({
+      typeImplement : req.body.typeImplement, quantity : updateQuantity
+    })
+    Implement.save(function () {
+      res.send("Actualizada cantidad de " + req.body.typeImplement)
+    })
+    implement.findOneAndRemove({typeImplement:req.body.typeImplement, quantity: oldQuantity}, function(err) {
+    });
+  }else{
+    let Implement = new implement({
+      typeImplement : req.body.typeImplement, quantity : req.body.quantity
+    })
+    Implement.save(function () {
+    })
+    let Register = new register({
+      typeImplement: req.body.typeImplement, quantityLoan: 0, quantityDevolution: 0, quantityServiceRendered: 0
+    })
+    Register.save(function () {
+      res.send("Implemento guardado exitosamente")
+    })
+  } 
+  
+  });
 };
-
 
 function getAllImplements (req, res) {
   implement.find({}, '-_id -__v', function (err, doc) {
@@ -19,7 +42,17 @@ function getAllImplements (req, res) {
   })
 };
 
+
+function deleteImplement(req, res){
+  implement.findOneAndRemove({typeImplement:req.body.typeImplement}, function(err) {
+    if(!err) {
+        res.send("Implemento eliminado correctamente");
+    } 
+  });
+}
+
 module.exports = { // Exporta todos los metodos
   saveImplements: saveImplements,
-  getAllImplements: getAllImplements
+  getAllImplements: getAllImplements,
+  deleteImplement: deleteImplement
 }

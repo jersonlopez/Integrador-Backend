@@ -14,12 +14,6 @@ function saveUser (req, res) { // función para guardar implemento
 };
 
 
-function getAllImplements (req, res) {
-  implement.find({}, '-_id -__v', function (err, doc) {
-    res.status(200).jsonp(doc)
-  })
-};
-
 module.exports = { // Exporta todos los metodos
   saveUser: saveUser
 }
