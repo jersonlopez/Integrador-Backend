@@ -1,6 +1,6 @@
-let modelLoan = require('./model')
-let modelDevolution = require('../devolution/model')
-let modelRegister = require('../register/model')
+const modelLoan = require('./model')
+const modelDevolution = require('../devolution/model')
+const modelRegister = require('../register/model')
 
 devolution = modelDevolution.getDevolution()
 loan = modelLoan.getLoan()
@@ -9,7 +9,7 @@ register = modelRegister.getRegister()
 function getSanction(req, res) {  //localhost:3000/v1/getDevolution/?id=222   METODO get devuelve un json con la fecha del ultimo prestamo (implemento a devolver) tipo de implemento id.
   let sanctionTime;
   devolution.find({id: req.query.id}, '-_id -__v -attendant -typeImplement -observation', function(err, doc) {                                               
-      if(doc.length > 0) {     
+      if(doc.length > 0) { 
         if(parseInt(doc[doc.length - 1].timeSanction) > 0){
           sanctionTime = Math.floor((parseInt(doc[doc.length - 1].timeSanction)/86400000) +1);  //cambiar por horario de trabajo
           res.send("USUARIO SANCIONADO; aun tiene " + sanctionTime + " Dias de sancion");
@@ -18,6 +18,7 @@ function getSanction(req, res) {  //localhost:3000/v1/getDevolution/?id=222   ME
       }
       res.send("Usuario NO sancionado");
   });
+  
 };
 
 
