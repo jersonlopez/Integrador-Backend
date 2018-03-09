@@ -4,7 +4,7 @@ const utilRegister = require('./util')
 
 let router = new Router()
 
-router.route('/getAllRegister')
+router.route('/registers')
   .get((...args) => {
     utilRegister.getAllRegister(...args)
 })

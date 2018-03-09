@@ -4,7 +4,7 @@ const utilUser = require('./util')
 
 let router = new Router()
 
-router.route('/saveUser')
+router.route('/user')
   .post((...args) => {
     utilUser.saveUser(...args)
   })

@@ -1,5 +1,6 @@
 
 const axios = require('axios')
+const request = require('request');
 
 function facultyInformation(req) {
   let options = {
@@ -20,45 +21,55 @@ function facultyInformation(req) {
 }
 
 
-function studentInformation(req){
-  let options = { method: 'POST',
-  url: 'http://172.21.0.131:3000/test/consultapersonamares',
-  headers: 
-   { 'content-type': 'application/json' },
-  body: { cedula: req },
-  json: true };
+async function studentInformation1(req) {
+  let options = {
+    method: 'POST',
+    url: 'http://172.21.0.131:3000/test/consultapersonamares',
+    headers:
+      { 'content-type': 'application/json' },
+    body: { cedula: req },
+    json: true
+  };
 
-request(options, function (error, response, body) {
-  if (error) throw new Error(error);
-  console.log(body)
-  
-});
+  await request(options, function (error, response, body) {
+    if (error) throw new Error(error);
+    //console.log(body)
+
+  });
+   console.log(request.Request);
+   
 }
 
-let data = '' 
+//studentInformation1(1037655392)
 
 
 
 
-async function studentInformation(req){
-  let respuesta =  axios.post('http://172.21.0.131:3000/test/consultapersonamares', {
-    cedula: req
-  })
+async function studentInformation(req) {
+  try {
+    await axios.post('http://172.21.0.131:3000/test/consultapersonamares', {
+      cedula: req
+    })
+    return respuesta
+  } catch (error) {
+    console.log(error);
 
-  return respuesta
+  }
 }
 
 
 
-async function call2(data){
+async function call2(data) {
 
-    let response = await studentInformation(data)
-    //console.log(response.data)
-    return response.data
-    
-} 
+  let response = await studentInformation1(data)
+  //console.log(response.data)
+  //return response.data
+
+}
+
+call2(1037655392)
 
 module.exports = {
-  faculty : facultyInformation,
-  student : call2
+  faculty: facultyInformation,
+  student: studentInformation1
 }

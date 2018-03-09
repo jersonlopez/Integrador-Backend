@@ -12,11 +12,11 @@ function getSanction(req, res) {  //localhost:3000/v1/getDevolution/?id=222   ME
       if(doc.length > 0) { 
         if(parseInt(doc[doc.length - 1].timeSanction) > 0){
           sanctionTime = Math.floor((parseInt(doc[doc.length - 1].timeSanction)/86400000) +1);  //cambiar por horario de trabajo
-          res.send("USUARIO SANCIONADO; aun tiene " + sanctionTime + " Dias de sancion");
+          res.send({"message":"USUARIO SANCIONADO; aun tiene " + sanctionTime + " Dias de sancion"});
           return;
         }                                                                                                                         
       }
-      res.send("Usuario NO sancionado");
+      res.send({"message":"Usuario NO sancionado"});
   });
   
 };
@@ -44,7 +44,7 @@ function saveLoan(req, res) {
     newRegister.save(function () {
     })
     register.findOneAndRemove({typeImplement:req.body.typeImplement, quantityLoan: oldLoan}, function(err) {
-    res.send("Prestamo efectuado exitosamente")
+    res.send({"message":"Prestamo efectuado exitosamente"})
     });
   });
 };

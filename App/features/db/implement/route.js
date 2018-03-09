@@ -4,17 +4,17 @@ const utilImplement = require('./util')
 
 let router = new Router()
 
-router.route('/saveImplements')
+router.route('/items')
   .post((...args) => {
     utilImplement.saveImplements(...args)
 })
 
-router.route('/getAllImplements')
+router.route('/items')
   .get((...args) => {
     utilImplement.getAllImplements(...args)
 })
 
-router.route('/deleteImplement')
+router.route('/items/:typeImplement')
   .delete((...args) => {
     utilImplement.deleteImplement(...args)
  })
