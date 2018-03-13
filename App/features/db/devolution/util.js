@@ -51,11 +51,11 @@ function saveDevolution(req, res) {   //metodo post
   if (sanction > 0){
     sanctionTime = Math.floor((sanction/86400000) +1);
     newDevolution.save(function () {
-      res.send("Devolucion efectuada exitosamente, SANCION DE: " + sanctionTime + " dias."/*+ newImplement*/)
+      res.send({"message": "Devolucion efectuada exitosamente, SANCION DE: " + sanctionTime + " dias."/*+ newImplement*/});
     })
   }else{
     newDevolution.save(function () {
-      res.send("Devolucion efectuada exitosamente")
+      res.send({"message":"Devolucion efectuada exitosamente"})
     })
   }
 };
