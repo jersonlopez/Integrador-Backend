@@ -26,7 +26,7 @@ function saveLoan(req, res) {
   let oldLoan;
   let oldServiceRendered;
   let newLoan = new loan({
-    id: req.body.id,name: req.body.name, typeImplement: req.body.typeImplement, faculty: req.body.faculty,
+    id: req.body.id, name: req.body.name, typeImplement: req.body.typeImplement, faculty: req.body.faculty,
     phone: req.body.phone, serviceRendered : req.body.serviceRendered, attendant: req.body.attendant, loanDate: new Date().getTime()
   })
   newLoan.save(function () {
