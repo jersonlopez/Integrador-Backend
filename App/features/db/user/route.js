@@ -9,4 +9,10 @@ router.route('/user')
     utilUser.saveUser(...args)
   })
 
+
+router.route('/userSportsSingIn')
+.post((...args) => {
+  utilUser.singIn(...args)
+})
+
 module.exports = router
