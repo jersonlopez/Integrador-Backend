@@ -8,7 +8,8 @@ let loanSchemaJSON = {
     phone: String,
     serviceRendered : String,
     attendant: String,
-    loanDate: String
+    loanDate: String,
+    email: String
   }
   
   function getLoanSchema () {

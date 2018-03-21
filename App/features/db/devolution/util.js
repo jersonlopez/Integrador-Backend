@@ -6,37 +6,29 @@ devolution = modelDevolution.getDevolution()
 loan = modelLoan.getLoan()
 register = modelRegister.getRegister()
 
-function getSanction(req, res) {  //getLoan/?id=123456   METODO get devuelve un json con la fecha del ultimo prestamo (implemento a devolver) tipo de implemento id.
- loan.find({id: req.query.id}, '-_id -__v -name -faculty -phone -serviceRendered -attendant', function(err, doc) {                                                                
-      if(doc.length > 0) {    
-        res.status(200).send(doc[doc.length - 1]);                                                                                    
-      }else{
-        res.send("Este usuario no tiene pendiente ningun prestamo");    
-      }
-	});
-}; 
-/*devuelve Lo cual se mete en el schema de devolution para calcular la sancion
-{
-    "id": "1234",
-    "typeImplement": "bicicleta",
-    "loanDate": 1519620089224"
-}*/
+function getSanction(id) {
+  let modelMethod = loan.find({ id: id }, '-_id -__v -id -name -faculty -phone -serviceRendered -attendant', function (err, doc) {
+  });
+  return modelMethod.exec()
+};
 
-function saveDevolution(req, res) {   //metodo post 
+async function saveDevolution(req, res) {   //metodo post 
   let oldDevolution;
-  let loanDate = req.body.loanDate;
-  let returnDate = (new Date()).getTime();
+  let loanDate = await getSanction(req.body.id)
+  loanDate = loanDate[loanDate.length -1].loanDate
+  let returnDate = (new Date()).getTime(); 
   let sanction, sanctionTime;
-  if((returnDate - loanDate) > 86400000){ //milisegundo en un dia  CAMBIAAAA
-    sanction = (returnDate - loanDate) * 5;
-  }else{
+  if ((returnDate - loanDate) > 32400000) {
+    sanction = Math.ceil((returnDate - loanDate) / 86400000) * 3;
+    console.log(sanction);
+  } else {
     sanction = 0;
   }
   let newDevolution = new devolution({
     id: req.body.id, typeImplement: req.body.typeImplement, observation: req.body.observation, attendant: req.body.attendant,
     timeSanction: sanction
   })
-  register.find({typeImplement: req.body.typeImplement}, '-_id -__v', function(err, doc){
+  register.find({ typeImplement: req.body.typeImplement }, '-_id -__v', function (err, doc) {
     oldDevolution = doc[0].quantityDevolution;
     let newRegister = new register({
       typeImplement: req.body.typeImplement, quantityLoan: doc[0].quantityLoan,
@@ -44,18 +36,18 @@ function saveDevolution(req, res) {   //metodo post
     })
     newRegister.save(function () {
     })
-    register.findOneAndRemove({typeImplement:req.body.typeImplement, quantityDevolution: oldDevolution}, function(err) {
+    register.findOneAndRemove({ typeImplement: req.body.typeImplement, quantityDevolution: oldDevolution }, function (err) {
     });
   });
 
-  if (sanction > 0){
-    sanctionTime = Math.floor((sanction/86400000) +1);
+  if (sanction > 0) {
+    sanctionTime = Math.ceil((sanction / 86400000));
     newDevolution.save(function () {
-      res.send({"message": "Devolucion efectuada exitosamente, SANCION DE: " + sanctionTime + " dias."/*+ newImplement*/});
+      res.send({ "message": "Devolucion efectuada exitosamente, SANCION DE: " + sanction + " dias."/*+ newImplement*/ });
     })
-  }else{
+  } else {
     newDevolution.save(function () {
-      res.send({"message":"Devolucion efectuada exitosamente"})
+      res.send({ "message": "Devolucion efectuada exitosamente" })
     })
   }
 };
@@ -67,7 +59,7 @@ function getAllDevolution(req, res) {
 }
 
 module.exports = {
-    getSanction : getSanction,
-    saveDevolution : saveDevolution, 
-    getAllDevolution : getAllDevolution
-  }
+  getSanction: getSanction,
+  saveDevolution: saveDevolution,
+  getAllDevolution: getAllDevolution
+}

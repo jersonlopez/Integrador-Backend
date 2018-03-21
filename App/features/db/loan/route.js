@@ -10,7 +10,7 @@ router.route('/loans')
   })
 
 router.route('/getDevolution')
-  .get((...args) => {
+  .post((...args) => {
     utilLoan.getSanction(...args)
   })
 

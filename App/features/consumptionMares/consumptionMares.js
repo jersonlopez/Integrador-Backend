@@ -6,8 +6,8 @@ const request = require('request');
 
 async function facultyInformation(req) {
   try {
-    return await axios.post('http://172.21.0.131:3000/prod/consultafacultadesmares', {
-      facultad: req
+    return await axios.post('http://172.21.0.131:3000/prod/consultainformacionacademicamares', {
+      cedula: req
     })
   } catch (error) {
     console.log(error);
@@ -27,6 +27,6 @@ async function studentInformation(req) {
 }
 
 module.exports = {
-  faculty: facultyInformation,
-  student: studentInformation
+  facultyInformation,
+  studentInformation
 }

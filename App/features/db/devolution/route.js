@@ -10,12 +10,6 @@ router.route('/devolution')
     utilDevolution.saveDevolution(...args)
   })
 
-
-router.route('/getLoan')
-  .get((...args) => {
-    utilDevolution.getSanction(...args)
-  })
-
  router.route('/devolutions')
   .get((...args) => {
     utilDevolution.getAllDevolution(...args)
