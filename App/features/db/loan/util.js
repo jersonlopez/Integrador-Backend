@@ -3,9 +3,9 @@ const modelDevolution = require('../devolution/model')
 const modelRegister = require('../register/model')
 const { studentInformation, facultyInformation } = require('../../consumptionMares/consumptionMares')
 
-devolution = modelDevolution.getDevolution()
-loan = modelLoan.getLoan()
-register = modelRegister.getRegister()
+let devolution = modelDevolution.getDevolution()
+let loan = modelLoan.getLoan()
+let register = modelRegister.getRegister()
 let studentData
 
 
@@ -13,7 +13,7 @@ let studentData
 async function getSanction(req, res) {  //localhost:3000/v1/getDevolution   METODO get devuelve un json con la fecha del ultimo prestamo (implemento a devolver) tipo de implemento id.
   let sanctionTime;
 
-  await studentInformation(req.body.id).then((data) => {
+  /* await studentInformation(req.body.id).then((data) => {
     studentData = {
       id : req.body.id,
       name: data.data[0].nombre + " " + data.data[0].apellidos,
@@ -24,17 +24,18 @@ async function getSanction(req, res) {  //localhost:3000/v1/getDevolution   METO
 
   await facultyInformation(req.body.id).then((data) => {
     studentData.faculty = data.data[0].facultad
-  })
+  }) */
 
   devolution.find({ id: req.body.id }, '-_id -__v -attendant -typeImplement -observation', function (err, doc) {
     if (doc.length > 0) {
-      if (parseInt(doc[doc.length - 1].timeSanction) > 0) {
-        sanctionTime = Math.ceil((parseInt(doc[doc.length - 1].timeSanction) / 86400000));  //cambiar por horario de trabajo
-        res.send({ "message": "USUARIO SANCIONADO; aun tiene " + sanctionTime + " Dias de sancion" });
-        return;
+      let timeSanction = doc[doc.length - 1].timeSanction
+      if (parseInt(www) > 0) {
+        res.send({ "message": "USUARIO SANCIONADO; aun tiene " + timeSanction + " Dias de sancion" });
+        return
       }
     }
-    res.send(studentData);
+    res.send("all good");
+    //res.send(studentData);
   });
 
 };
@@ -48,8 +49,8 @@ function saveLoan(req, res) {
     phone: studentData.phone, serviceRendered: req.body.serviceRendered, attendant: req.body.attendant, 
     email: studentData.email, loanDate: new Date().getTime()
   })
-  newLoan.save(function () {
-  })
+  newLoan.save(function () {})
+
   register.find({ typeImplement: req.body.typeImplement }, '-_id -__v', function (err, doc) {
     oldLoan = doc[0].quantityLoan;
     oldServiceRendered = doc[0].quantityServiceRendered;

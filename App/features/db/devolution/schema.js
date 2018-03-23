@@ -1,12 +1,35 @@
 /* jshint esversion: 6 */
 
 let devolutionSchemaJSON = { 
-    id: String,
-    typeImplement: String,
-    observation: String,
-    attendant: String,
-    loanDate: String,
-    timeSanction: String
+    id: { 
+      type: String, 
+      required: true, 
+      unique: true 
+    },
+    typeImplement: { 
+      type: String, 
+      required: true 
+    },
+    observation: { 
+      type: String, 
+      required: true 
+    },
+    attendant: { 
+      type: String, 
+      required: true 
+    },
+    loanDate: { 
+      type: Number, 
+      required: true 
+    },
+    timeSanction: { 
+      type: Number, 
+      required: true 
+    },
+    devolutionDate: { 
+      type: Number, 
+      required: true 
+    }
   }
   
   function getDevolutionSchema () {
