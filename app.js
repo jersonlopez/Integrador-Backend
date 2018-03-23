@@ -1,6 +1,6 @@
 const express = require('express')
 
-const {test} = require("./App/features/db/schedule/schedule")
+const {schedule} = require("./App/features/db/sportOffice/schedule/schedule")
 const {db} = require("./conection")
 
 let app = new express()
@@ -12,4 +12,4 @@ app.listen(app.get('port'), () => {
   console.log(`It's the best app... ${app.get('port')}`)
 })
 
-test()
+schedule

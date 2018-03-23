@@ -3,8 +3,7 @@
 let loanSchemaJSON = {
   id: { 
     type: String, 
-    required: true, 
-    unique: true 
+    required: true
   },
   name: { 
     type: String, 

@@ -9,7 +9,7 @@ router.route('/loans')
     utilLoan.saveLoan(...args)
   })
 
-router.route('/getDevolution')
+router.route('/sanctions')
   .post((...args) => {
     utilLoan.getSanction(...args)
   })

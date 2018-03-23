@@ -9,13 +9,13 @@ function createToken(user){
 		iat: moment().unix(),					//fecha del momento en que se crea el token en formato unix
 		exp: moment().add(14, 'days').unix //fecha de expiración del token
 	}
-	return JWT.encode(payload, 'jersonselatragasinrefutar') //Llama el token desde el módulo config
+	return JWT.encode(payload, 'integrador') //Llama el token desde el módulo config
 }
 
 function decodeToken(token){		//uso de promesas de forma nativa, dentro del propio lenguaje, sin terceros
 	const decoded = new Promise((resolve, reject) => {    	//decoded tendra una promesa, si se resuelve => token codificado
 		try{											  	//si no, un mensaje diferente
-			const payload = JWT.decode(token, 'jersonselatragasinrefutar') //Decodifica el token y lo guarda en payload
+			const payload = JWT.decode(token, 'integrador') //Decodifica el token y lo guarda en payload
 
 			if(payload.exp <= moment.unix()){ //Ver si el token ha expirado
 				reject({

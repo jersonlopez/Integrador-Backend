@@ -3,8 +3,7 @@
 let devolutionSchemaJSON = { 
     id: { 
       type: String, 
-      required: true, 
-      unique: true 
+      required: true
     },
     typeImplement: { 
       type: String, 

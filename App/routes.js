@@ -2,10 +2,10 @@
 
 const Router = require('express').Router
 
-let routeDevolution = require('./features/db/devolution/route')
-let routeImplement= require('./features/db/implement/route')  
-let routeLoan = require('./features/db/loan/route')  
-let routeRegister = require('./features/db/register/route')  
+let routeDevolution = require('./features/db/sportOffice/devolution/route')
+let routeImplement= require('./features/db/sportOffice/implement/route')  
+let routeLoan = require('./features/db/sportOffice/loan/route')  
+let routeRegister = require('./features/db/sportOffice/register/route')  
 let routeUser = require('./features/db/user/route')  
 
 
