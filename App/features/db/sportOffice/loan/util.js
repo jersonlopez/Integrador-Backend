@@ -71,7 +71,7 @@ function saveLoan(req, res) {
     }
     let newRegister = new register({
       typeImplement: req.body.typeImplement, quantityLoan: oldLoan + 1,
-      quantityDevolution: oldQuantityDevolution, quantityServiceRendered: oldServiceRendered
+      quantityDevolution: oldQuantityDevolutions, quantityServiceRendered: oldServiceRendered
     })
     newRegister.save(function () {
     })
