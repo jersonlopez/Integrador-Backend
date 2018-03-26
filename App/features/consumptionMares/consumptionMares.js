@@ -6,7 +6,7 @@ const request = require('request');
 
 async function facultyInformation(req) {
   try {
-    return await axios.post('http://172.21.0.131:3000/prod/consultainformacionacademicamares', {
+    return await axios.post('http://lis.udea.edu.co/api/prod/consultainformacionacademicamares', {
       cedula: req
     })
   } catch (error) {
@@ -17,7 +17,7 @@ async function facultyInformation(req) {
 
 async function studentInformation(req) {
   try {
-    return await axios.post('http://172.21.0.131:3000/test/consultapersonamares', {
+    return await axios.post('http://lis.udea.edu.co/api/test/consultapersonamares', {
       cedula: req
     })
   } catch (error) {

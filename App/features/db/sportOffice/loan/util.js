@@ -13,7 +13,7 @@ let studentData
 async function getSanction(req, res) {  //localhost:3000/v1/getDevolution   METODO get devuelve un json con la fecha del ultimo prestamo (implemento a devolver) tipo de implemento id.
   let sanctionTime;
 
-  await studentInformation(req.body.id).then((data) => {
+  await studentInformation(req.body.id).then((data) => {    
     studentData = {
       id: req.body.id,
       name: data.data[0].nombre + " " + data.data[0].apellidos,
@@ -34,6 +34,10 @@ async function getSanction(req, res) {  //localhost:3000/v1/getDevolution   METO
         return
       }
     }
+    if(err){
+      console.log(err);
+      
+    }
     res.send(studentData);
   });
 
@@ -42,7 +46,7 @@ async function getSanction(req, res) {  //localhost:3000/v1/getDevolution   METO
 
 function saveLoan(req, res) {
   let oldLoan;
-  let oldServiceRendered;
+  let oldServiceRendered, oldQuantityDevolution;
   let newLoan = new loan({
     id: studentData.id, name: studentData.name, typeImplement: req.body.typeImplement, faculty: studentData.faculty,
     phone: studentData.phone, serviceRendered: req.body.serviceRendered, attendant: req.body.attendant,
@@ -54,10 +58,12 @@ function saveLoan(req, res) {
   register.find({ typeImplement: req.body.typeImplement }, '-_id -__v', function (err, doc) {
     if(doc.length>0){
       oldLoan = doc[0].quantityLoan;
-      oldServiceRendered = doc[0].quantityServiceRendered      
+      oldServiceRendered = doc[0].quantityServiceRendered  
+      oldQuantityDevolution = doc[0].quantityDevolution  
     }else{
       oldLoan = 0;
       oldServiceRendered = 0
+      oldQuantityDevolution = 0      
     }
     
     if (req.body.serviceRendered === 'Si') {
@@ -65,7 +71,7 @@ function saveLoan(req, res) {
     }
     let newRegister = new register({
       typeImplement: req.body.typeImplement, quantityLoan: oldLoan + 1,
-      quantityDevolution: doc[0].quantityDevolution, quantityServiceRendered: oldServiceRendered
+      quantityDevolution: oldQuantityDevolution, quantityServiceRendered: oldServiceRendered
     })
     newRegister.save(function () {
     })
