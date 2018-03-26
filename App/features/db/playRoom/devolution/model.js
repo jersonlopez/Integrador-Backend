@@ -4,7 +4,7 @@ let schema = mongoose.Schema    // se defina una variable Schema
 
 let devolutionSchema = new schema(schemas.getDevolutionSchema())  // Creacion del esquema como tal
 
-let devolution = mongoose.model('DevolutionSport', devolutionSchema)  // creacion del modelo, este es que conecta con la bd, se le pasa el esquema de la tabla a//Creacion del esquema como tal
+let devolution = mongoose.model('DevolutionPlayRoom', devolutionSchema)  // creacion del modelo, este es que conecta con la bd, se le pasa el esquema de la tabla a//Creacion del esquema como tal
 
 function getDevolution () {
   return devolution

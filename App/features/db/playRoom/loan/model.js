@@ -4,7 +4,7 @@ let schema = mongoose.Schema    // se defina una variable Schema
 
 let loanSchema = new schema(schemas.getLoanSchema())  // Creacion del esquema como tal
 
-let loan = mongoose.model('LoanSport', loanSchema)  // creacion del modelo, este es que conecta con la bd, se le pasa el esquema de la tabla a//Creacion del esquema como tal
+let loan = mongoose.model('LoanPlayRoom', loanSchema)  // creacion del modelo, este es que conecta con la bd, se le pasa el esquema de la tabla a//Creacion del esquema como tal
 
 function getLoan() {
   return loan

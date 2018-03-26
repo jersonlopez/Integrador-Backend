@@ -4,17 +4,17 @@ const utilImplement = require('./util')
 
 let router = new Router()
 
-router.route('/sports/items')
+router.route('/playRoom/items')
   .post((...args) => {
     utilImplement.saveImplements(...args)
 })
 
-router.route('/sports/items')
+router.route('/playRoom/items')
   .get((...args) => {
     utilImplement.getAllImplements(...args)
 })
 
-router.route('/sports/items/:typeImplement')
+router.route('/playRoom/items/:typeImplement')
   .delete((...args) => {
     utilImplement.deleteImplement(...args)
  })

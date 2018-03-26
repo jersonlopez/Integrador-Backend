@@ -4,7 +4,7 @@ let schema = mongoose.Schema    // se defina una variable Schema
 
 let registerSchema = new schema(schemas.getRegisterSchema())  // Creacion del esquema como tal
 
-let register = mongoose.model('Register', registerSchema)  // creacion del modelo, este es que conecta con la bd, se le pasa el esquema de la tabla a//Creacion del esquema como tal
+let register = mongoose.model('RegisterSport', registerSchema)  // creacion del modelo, este es que conecta con la bd, se le pasa el esquema de la tabla a//Creacion del esquema como tal
 
 function getRegister() {
   return register

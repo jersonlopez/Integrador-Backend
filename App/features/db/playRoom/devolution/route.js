@@ -5,12 +5,12 @@ const utilDevolution = require('./util')
 let router = new Router()
 
 
-router.route('/sports/devolutions')
+router.route('/playRoom/devolutions')
   .post((...args) => {
     utilDevolution.saveDevolution(...args)
   })
 
- router.route('/sports/devolutions')
+ router.route('/playRoom/devolutions')
   .get((...args) => {
     utilDevolution.getAllDevolution(...args)
 })

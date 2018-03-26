@@ -4,17 +4,17 @@ const utilLoan = require('./util');
 
 let router = new Router()
 
-router.route('/sports/loans')
+router.route('/playRoom/loans')
   .post((...args) => {
     utilLoan.saveLoan(...args)
   })
 
-router.route('/sports/sanctions')
+router.route('/playRoom/sanctions')
   .post((...args) => {
     utilLoan.getSanction(...args)
   })
 
-router.route('/sports/loans')
+router.route('/playRoom/loans')
   .get((...args) => {
     utilLoan.getAllLoan(...args)
 })
