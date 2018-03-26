@@ -5,7 +5,7 @@ const utilDevolution = require('./util')
 let router = new Router()
 
 
-router.route('/devolution')
+router.route('/devolutions')
   .post((...args) => {
     utilDevolution.saveDevolution(...args)
   })

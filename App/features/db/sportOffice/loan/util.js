@@ -35,8 +35,7 @@ async function getSanction(req, res) {  //localhost:3000/v1/getDevolution   METO
       }
     }
     if(err){
-      console.log(err);
-      
+      console.log(err);      
     }
     res.send(studentData);
   });
@@ -52,8 +51,11 @@ function saveLoan(req, res) {
     phone: studentData.phone, serviceRendered: req.body.serviceRendered, attendant: req.body.attendant,
     email: studentData.email, loanDate: new Date().getTime()
   })
-  console.log(newLoan)
-  newLoan.save(function () {})
+  //console.log(newLoan)
+  newLoan.save(function (err, success) {
+    console.log(err);
+    
+  })
 
   register.find({ typeImplement: req.body.typeImplement }, '-_id -__v', function (err, doc) {
     if(doc.length>0){
@@ -71,7 +73,7 @@ function saveLoan(req, res) {
     }
     let newRegister = new register({
       typeImplement: req.body.typeImplement, quantityLoan: oldLoan + 1,
-      quantityDevolution: oldQuantityDevolutions, quantityServiceRendered: oldServiceRendered
+      quantityDevolution: oldQuantityDevolution, quantityServiceRendered: oldServiceRendered
     })
     newRegister.save(function () {
     })
