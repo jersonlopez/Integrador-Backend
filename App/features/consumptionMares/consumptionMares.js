@@ -26,7 +26,22 @@ async function studentInformation(req) {
   }
 }
 
+async function authenticacion(user, password) {
+  try {
+    return await axios.post('http://lis.udea.edu.co/api/prod/validarusuariooidxcn', {
+      usuario: user,
+      clave: password
+    })
+  } catch (error) {
+    console.log(error);
+
+  }
+}
+
+//let test = auth("sergioa.castrillon", "4350224225043").then((data)=>{console.log(data.data);})
+
 module.exports = {
   facultyInformation,
-  studentInformation
+  studentInformation,
+  authenticacion
 }
