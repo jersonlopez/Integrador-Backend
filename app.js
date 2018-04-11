@@ -4,7 +4,7 @@ const {schedule} = require("./App/features/db/sportOffice/schedule/schedule")
 const {db} = require("./conection")
 
 let app = new express()
-db
+
 
 require('./server')(app)
 
@@ -13,3 +13,4 @@ app.listen(app.get('port'), () => {
 })
 
 schedule
+db

@@ -1,6 +1,6 @@
 /* jshint esversion: 6 */
 
-let implementsSchemaJSON = { // estructura del esquema, en formato json, excelente para nodo porque json surge de js y node esta basado en js
+let implementsSchemaJSON_play = { // estructura del esquema, en formato json, excelente para nodo porque json surge de js y node esta basado en js
     typeImplement: {
         type: String,
         required: true,
@@ -17,7 +17,7 @@ let implementsSchemaJSON = { // estructura del esquema, en formato json, excelen
 }
 
   function getImplementsSchema() {
-    return implementsSchemaJSON
+    return implementsSchemaJSON_play
   }
   
   module.exports = { // Exporta todos los metodos

@@ -5,6 +5,8 @@ let schema = mongoose.Schema
 let implementSchema = new schema(schemas.getImplementsSchema())  // Creacion del esquema como tal
 let implement = mongoose.model('ImplementSport', implementSchema)  // creacion del modelo, este es que conecta con la bd, se le pasa el esquema de la tabla a//Creacion del esquema como tal
 
+console.log("Aqui corrió modelo implement sport");
+
 function getImplements () {
   return implement
 }
