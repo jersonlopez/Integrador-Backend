@@ -13,12 +13,17 @@ let studentData
 async function getSanction(req, res) {  //localhost:3000/v1/getDevolution   METODO get devuelve un json con la fecha del ultimo prestamo (implemento a devolver) tipo de implemento id.
   let sanctionTime;
 
-  await studentInformation(req.body.id).then((data) => {    
-    studentData = {
-      id: req.body.id,
-      name: data.data[0].nombre + " " + data.data[0].apellidos,
-      phone: data.data[0].telefono,
-      email: data.data[0].emailInstitucional
+  await studentInformation(req.body.id).then((data) => {
+
+    if (data.data.length == 0) {
+      res.send({ "message": "Por favor ingrese una cedula valida" })
+    } else {
+      studentData = {
+        id: req.body.id,
+        name: data.data[0].nombre + " " + data.data[0].apellidos,
+        phone: data.data[0].telefono,
+        email: data.data[0].emailInstitucional
+      }
     }
   })
 
@@ -34,8 +39,8 @@ async function getSanction(req, res) {  //localhost:3000/v1/getDevolution   METO
         return
       }
     }
-    if(err){
-      console.log(err);      
+    if (err) {
+      console.log(err);
     }
     res.send(studentData);
   });
@@ -54,20 +59,20 @@ function saveLoan(req, res) {
   //console.log(newLoan)
   newLoan.save(function (err, success) {
     console.log(err);
-    
+
   })
 
   register.find({ typeImplement: req.body.typeImplement }, '-_id -__v', function (err, doc) {
-    if(doc.length>0){
+    if (doc.length > 0) {
       oldLoan = doc[0].quantityLoan;
-      oldServiceRendered = doc[0].quantityServiceRendered  
-      oldQuantityDevolution = doc[0].quantityDevolution  
-    }else{
+      oldServiceRendered = doc[0].quantityServiceRendered
+      oldQuantityDevolution = doc[0].quantityDevolution
+    } else {
       oldLoan = 0;
       oldServiceRendered = 0
-      oldQuantityDevolution = 0      
+      oldQuantityDevolution = 0
     }
-    
+
     if (req.body.serviceRendered === 'Si') {
       oldServiceRendered = oldServiceRendered + 1
     }

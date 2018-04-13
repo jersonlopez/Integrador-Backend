@@ -40,6 +40,10 @@ let reservationSchemaJSON = { // estructura del esquema, en formato json, excele
     role: {
         type: String,
         required: true
+    },
+    until: {
+        type: String,
+        required: true
     }
     
 }

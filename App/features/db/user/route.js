@@ -10,7 +10,7 @@ router.route('/user')
   })
 
 
-router.route('/userSportsSingIn')
+router.route('/login')
 .post((...args) => {
   utilUser.singIn(...args)
 })
