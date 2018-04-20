@@ -2,6 +2,7 @@
 
 let userSchemasJSON = {
     name: String,
+    userName : String,
     password: String,
     job: String
   }

@@ -8,7 +8,7 @@ const routes = require('./App/routes')
 
 module.exports = (app) => {
   app.set('port', config.port)
-  app.use(bodyParser.urlencoded({extend: true}));
+  app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
   app.use(morgan(config.morganMode))
 
