@@ -11,7 +11,7 @@ function saveImplements(req, res) { // función para guardar implemento
       let updateQuantity;
       let oldQuantity;
       oldQuantity = doc[0].quantity;
-      updateQuantity = doc[0].quantity + req.body.quantity;
+      updateQuantity = parseInt(doc[0].quantity) + parseInt(req.body.quantity)
       
       implement.findOneAndUpdate({ _id: doc[0]._id}, {$set:{quantity: updateQuantity }}, function (err) {
         res.send({ "message": `Cantidad de ${req.body.typeImplement} Actulizada` })

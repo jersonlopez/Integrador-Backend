@@ -1,4 +1,7 @@
-const { authenticacion, studentInformation } = require('../../../consumptionMares/consumptionMares')
+const {
+    authenticacion,
+    studentInformation
+} = require('../../../consumptionMares/consumptionMares')
 const modelReservation = require('./model')
 
 
@@ -7,15 +10,25 @@ let studentData
 
 async function saveReservation(req, res) {
     let i = 0;
-    let rule = 4*3600000
+    let rule = 4 * 3600000
     let until = new Date().getTime() + rule
 
     await authenticacion(req.body.usuario, req.body.clave).then((data) => {
-        if (parseInt(data.data) != parseInt(req.body.id)) {
-            res.send({ "message": "No es usuario activo de la Universidad de Antioquia" })
+        console.log(data.data);
+
+        if (!!parseInt(data.data) == false) {
+            res.send({
+                "message": "Usuario o Contraseña Incorrectos"
+            })
         } else {
-            studentData = {
-                id: data.data
+            if (parseInt(data.data) != parseInt(req.body.id)) {
+                res.send({
+                    "message": "No es usuario activo de la Universidad de Antioquia"
+                })
+            } else {
+                studentData = {
+                    id: data.data
+                }
             }
         }
     })
@@ -27,9 +40,17 @@ async function saveReservation(req, res) {
     })
 
     let newReservation = new reservation({
-        id: studentData.id, name: studentData.name, resevationDate: req.body.resevationDate, typeConsole: req.body.typeConsole,
-        phone: studentData.phone, hourIn: req.body.hourIn, controlQuantity: req.body.controlQuantity,
-        email: studentData.email, videoGame: req.body.videoGame, role : "Responsable", until: until
+        id: studentData.id,
+        name: studentData.name,
+        resevationDate: req.body.resevationDate,
+        typeConsole: req.body.typeConsole,
+        phone: studentData.phone,
+        hourIn: req.body.hourIn,
+        controlQuantity: req.body.controlQuantity,
+        email: studentData.email,
+        videoGame: req.body.videoGame,
+        role: "Responsable",
+        until: until
     })
     newReservation.save(function (err, success) {
         //console.log(err)
@@ -43,14 +64,24 @@ async function saveReservation(req, res) {
             studentData.email = data.data[0].emailInstitucional
         })
         let newReservation = new reservation({
-            id: req.body.companion[i].id, name: studentData.name, resevationDate: req.body.resevationDate, typeConsole: req.body.typeConsole,
-            phone: studentData.phone, hourIn: req.body.hourIn, controlQuantity: req.body.controlQuantity,
-            email: studentData.email, videoGame: req.body.videoGame, role : "Acompañante", until: until
+            id: req.body.companion[i].id,
+            name: studentData.name,
+            resevationDate: req.body.resevationDate,
+            typeConsole: req.body.typeConsole,
+            phone: studentData.phone,
+            hourIn: req.body.hourIn,
+            controlQuantity: req.body.controlQuantity,
+            email: studentData.email,
+            videoGame: req.body.videoGame,
+            role: "Acompañante",
+            until: until
         })
-        newReservation.save(function () { })
+        newReservation.save(function () {})
         i++
     }
-    res.send({ "message": "RESERVACION GUARDADA" })
+    res.send({
+        "message": "RESERVACION GUARDADA"
+    })
 };
 
 
