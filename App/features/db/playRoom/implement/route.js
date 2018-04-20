@@ -14,6 +14,11 @@ router.route('/playRoom/items')
     utilImplement.getAllImplements(...args)
 })
 
+router.route('/playRoom/item')
+  .post((...args) => {
+    utilImplement.getByImplement(...args)
+})
+
 router.route('/playRoom/items/:typeImplement')
   .delete((...args) => {
     utilImplement.deleteImplement(...args)
