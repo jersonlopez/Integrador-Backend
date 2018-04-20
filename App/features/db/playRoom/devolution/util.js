@@ -2,14 +2,14 @@ let modelDevolution = require('./model')
 let modelLoan = require('../loan/model')
 
 let devolution = modelDevolution.getDevolution()
-let loan = modelLoan.getLoan()
+let loan_play = modelLoan.getLoan()
 
 const workTime = 32400000
 const millieconsOfOneDay = 86400000
 const ruleOfSantion = 3
 
 function getSanction(id) {
-  return loan.find({ id: id }, '-_id -__v -id -name -faculty -phone -serviceRendered -attendant')
+  return loan_play.find({ id: id }, '-_id -__v -id -name -faculty -phone -serviceRendered -attendant')
   .exec().then((data)=>{
     return data
   }).catch((err) => {
@@ -18,6 +18,18 @@ function getSanction(id) {
 };
 
 async function saveDevolution(req, res) {  
+  await loan_play.find({ typeImplement: req.body.typeImplement, state: "Activo", id : req.body.id}, '-__v', function (err, doc) {
+    if(doc.length === 0){
+      res.send({"message": "Por favor ingresa una cedula valida" })
+      
+    }else{
+      loan_play.findOneAndUpdate({ _id: doc[doc.length-1]._id }, { $set: { state: "Inactivo" } }, function (err) {
+      });
+    }
+   
+
+  });
+  
   let oldDevolution;
   let loanDate = await getSanction(req.body.id)
   loanDate = loanDate[loanDate.length -1].loanDate

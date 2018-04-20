@@ -20,9 +20,15 @@ function getSanction(id) {
 };
 
 async function saveDevolution(req, res) {
-  loan.find({ typeImplement: req.body.typeImplement, state: "Activo", id : req.body.id}, '-__v', function (err, doc) {
-    loan.findOneAndUpdate({ _id: doc[0]._id }, { $set: { state: "Inactivo" } }, function (err) {
-    });
+  await loan.find({ typeImplement: req.body.typeImplement, state: "Activo", id : req.body.id}, '-__v', function (err, doc) {
+    if(doc.length === 0){
+      res.send({"message": "Por favor ingresa una cedula valida" })
+      
+    }else{
+      loan.findOneAndUpdate({ _id: doc[doc.length-1]._id }, { $set: { state: "Inactivo" } }, function (err) {
+      });
+    }
+   
 
   });
   let oldDevolution;

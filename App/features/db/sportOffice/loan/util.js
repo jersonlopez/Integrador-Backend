@@ -61,7 +61,7 @@ function saveLoan(req, res) {
   register.find({ typeImplement: req.body.typeImplement }, '-__v', function (err, doc) {
 
 
-    register.findOneAndUpdate({ _id: doc[0]._id }, { $set: { quantityLoan: doc[0].quantityLoan + 1 } }, function (err) {
+    register.findOneAndUpdate({ _id: doc[doc.length-1]._id }, { $set: { quantityLoan: doc[0].quantityLoan + 1 } }, function (err) {
       res.send({ "message": "Prestamo efectuado exitosamente" })
     });
 
