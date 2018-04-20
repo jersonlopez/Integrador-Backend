@@ -77,7 +77,7 @@ function getAllLoan(req, res) {
 };
 
 function getActualLoans(req, res) {
-  loan.find({}, '-_id -__v', function (err, doc) {
+  loan.find({state: "Activo"}, '-_id -__v', function (err, doc) {
     res.status(200).jsonp(doc)
   })
 };
@@ -87,6 +87,7 @@ function getActualLoans(req, res) {
 module.exports = {
   saveLoan: saveLoan,
   getSanction: getSanction,
-  getAllLoan: getAllLoan
+  getAllLoan: getAllLoan,
+  getActualLoans : getActualLoans
 
 }
