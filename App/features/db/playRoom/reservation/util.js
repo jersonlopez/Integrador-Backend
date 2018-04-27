@@ -33,6 +33,20 @@ async function saveReservation(req, res) {
         }
     })
 
+    reservation.find({ id: req.body.id }, '-_id -__v -attendant -typeImplement -observation', function (err, doc) {
+        if (doc.length > 0) {
+            console.log("entree");
+            
+          let xx = doc[doc.length - 1].until
+          if (parseInt(xx) > 0) {
+              console.log("entreeeeeee");
+              
+            res.send({ "message": "Ya tiene una reserva agendada; no puede hacer más reservas " + xx + " Dias" });
+            return
+          }
+        };
+    });
+
     await studentInformation(req.body.id).then((data) => {
         studentData.name = data.data[0].nombre + " " + data.data[0].apellidos
         studentData.phone = data.data[0].telefono
