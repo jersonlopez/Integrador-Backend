@@ -43,7 +43,7 @@ async function saveDevolution(req, res) {
     sanction = 0;
   }
   let newDevolution = new devolution({
-    id: req.body.id, typeImplement: req.body.typeImplement, observation: req.body.observation, attendant: req.body.attendant,
+    id: req.body.id, typeImplement: req.body.typeImplement, attendant: req.body.attendant,
     loanDate: loanDate ,timeSanction: sanction, devolutionDate: returnDate
   })
   register.find({ typeImplement: req.body.typeImplement }, '-__v', function (err, doc) {

@@ -9,12 +9,13 @@ let reservation = modelReservation.getReservation()
 let studentData
 
 async function saveReservation(req, res) {
+
     let i = 0;
     let rule = 4 * 3600000
     let until = new Date().getTime() + rule
 
     await authenticacion(req.body.usuario, req.body.clave).then((data) => {
-        console.log(data.data);
+        //console.log(req.body);
 
         if (!!parseInt(data.data) == false) {
             res.send({
@@ -27,20 +28,17 @@ async function saveReservation(req, res) {
                 })
             } else {
                 studentData = {
-                    id: data.data
+                    id: parseInt(data.data)
                 }
             }
         }
     })
 
+
     reservation.find({ id: req.body.id }, '-_id -__v -attendant -typeImplement -observation', function (err, doc) {
-        if (doc.length > 0) {
-            console.log("entree");
-            
+        if (doc.length > 0) {            
           let xx = doc[doc.length - 1].until
-          if (parseInt(xx) > 0) {
-              console.log("entreeeeeee");
-              
+          if (parseInt(xx) > 0) {              
             res.send({ "message": "Ya tiene una reserva agendada; no puede hacer más reservas " + xx + " Dias" });
             return
           }
