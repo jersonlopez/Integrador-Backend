@@ -37,12 +37,11 @@ async function saveDevolution(req, res) {
   let sanction
   if ((returnDate - loanDate) > workTime) {
     sanction = Math.ceil((returnDate - loanDate) / millieconsOfOneDay) * ruleOfSantion
-    console.log(sanction);
   } else {
     sanction = 0;
   }
   let newDevolution = new devolution({
-    id: req.body.id, typeImplement: req.body.typeImplement, observation: req.body.observation, attendant: req.body.attendant,
+    id: req.body.id, typeImplement: req.body.typeImplement, attendant: req.body.attendant,
     loanDate: loanDate ,timeSanction: sanction, devolutionDate: returnDate, hourOut : (new Date).getHours()+":"+(new Date).getMinutes()+":"+(new Date).getSeconds()
 
   })

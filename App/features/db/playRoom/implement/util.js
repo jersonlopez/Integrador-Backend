@@ -47,11 +47,19 @@ function getByImplement(req, res) {
 
 
 function deleteImplement(req, res) {
-  implement_play.findOneAndRemove({ typeImplement: req.params.typeImplement }, function (err) {
-    if (!err) {
-      res.send({ "message": "Implemento eliminado correctamente" });
+  implement_play.find({ typeImplement: req.body.typeImplement }, '-__v', function (err, doc) {
+
+    if (doc.length !== 0) {
+      let updateQuantity;
+      let oldQuantity;
+      oldQuantity = doc[0].quantity;
+      updateQuantity = parseInt(doc[0].quantity) - parseInt(req.body.quantity)
+
+      implement_play.findOneAndUpdate({ _id: doc[0]._id }, { $set: { quantity: updateQuantity } }, function (err) {
+        res.send({ "message": `Cantidad de ${req.body.typeImplement} Actulizada` })
+      })
     }
-  });
+})
 }
 
 module.exports = { // Exporta todos los metodos

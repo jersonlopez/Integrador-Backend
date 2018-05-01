@@ -9,10 +9,6 @@ let devolutionSchemaJSON = {
       type: String, 
       required: true 
     },
-    observation: { 
-      type: String,  
-      required: true 
-    },
     attendant: { 
       type: String, 
       required: true 

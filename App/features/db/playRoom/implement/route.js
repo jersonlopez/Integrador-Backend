@@ -19,7 +19,7 @@ router.route('/playRoom/item')
     utilImplement.getByImplement(...args)
 })
 
-router.route('/playRoom/items/:typeImplement')
+router.route('/playRoom/items/')
   .delete((...args) => {
     utilImplement.deleteImplement(...args)
  })
