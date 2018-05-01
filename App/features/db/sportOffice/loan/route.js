@@ -19,5 +19,12 @@ router.route('/sports/loans')
     utilLoan.getAllLoan(...args)
 })
 
+router.route('/sports/activeLoans')
+  .get((...args) => {
+    utilLoan.getActualLoans(...args)
+})
+
+
+
 
 module.exports = router

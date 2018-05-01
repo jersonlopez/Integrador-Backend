@@ -52,44 +52,32 @@ function saveLoan(req, res) {
   let oldLoan;
   let oldServiceRendered, oldQuantityDevolution;
   let newLoan = new loan({
-    id: studentData.id, name: studentData.name, typeImplement: req.body.typeImplement, faculty: studentData.faculty,
-    phone: studentData.phone, serviceRendered: req.body.serviceRendered, attendant: req.body.attendant,
-    email: studentData.email, loanDate: new Date().getTime()
+    id: studentData.id, state : "Activo", name: studentData.name, typeImplement: req.body.typeImplement, faculty: studentData.faculty,
+    phone: studentData.phone, attendant: req.body.attendant,email: studentData.email, loanDate: new Date().getTime()
   })
-  //console.log(newLoan)
   newLoan.save(function (err, success) {
     console.log(err);
-
   })
+  register.find({ typeImplement: req.body.typeImplement }, '-__v', function (err, doc) {
 
-  register.find({ typeImplement: req.body.typeImplement }, '-_id -__v', function (err, doc) {
-    if (doc.length > 0) {
-      oldLoan = doc[0].quantityLoan;
-      oldServiceRendered = doc[0].quantityServiceRendered
-      oldQuantityDevolution = doc[0].quantityDevolution
-    } else {
-      oldLoan = 0;
-      oldServiceRendered = 0
-      oldQuantityDevolution = 0
-    }
 
-    if (req.body.serviceRendered === 'Si') {
-      oldServiceRendered = oldServiceRendered + 1
-    }
-    let newRegister = new register({
-      typeImplement: req.body.typeImplement, quantityLoan: oldLoan + 1,
-      quantityDevolution: oldQuantityDevolution, quantityServiceRendered: oldServiceRendered
-    })
-    newRegister.save(function () {
-    })
-    register.findOneAndRemove({ typeImplement: req.body.typeImplement, quantityLoan: oldLoan }, function (err) {
+    register.findOneAndUpdate({ _id: doc[doc.length-1]._id }, { $set: { quantityLoan: doc[0].quantityLoan + 1 } }, function (err) {
       res.send({ "message": "Prestamo efectuado exitosamente" })
     });
+
   });
 };
 
+
+
 function getAllLoan(req, res) {
   loan.find({}, '-_id -__v', function (err, doc) {
+    res.status(200).jsonp(doc)
+  })
+};
+
+function getActualLoans(req, res) {
+  loan.find({state: "Activo"}, '-_id -__v', function (err, doc) {
     res.status(200).jsonp(doc)
   })
 };
@@ -99,6 +87,7 @@ function getAllLoan(req, res) {
 module.exports = {
   saveLoan: saveLoan,
   getSanction: getSanction,
-  getAllLoan: getAllLoan
+  getAllLoan: getAllLoan,
+  getActualLoans : getActualLoans
 
 }

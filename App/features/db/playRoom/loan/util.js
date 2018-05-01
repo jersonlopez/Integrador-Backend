@@ -5,7 +5,7 @@ const {
   facultyInformation
 } = require('../../../consumptionMares/consumptionMares')
 
-let loan = modelLoan.getLoan()
+let loan_play = modelLoan.getLoan()
 let studentData
 let devolution = modelDevolution.getDevolution()
 
@@ -53,9 +53,10 @@ async function getSanction(req, res) {
 
 
 function saveLoan(req, res) {
-  let newLoan = new loan({
+  let newLoan = new loan_play({
     id: studentData.id,
     name: studentData.name,
+    state: "Activo",
     typeImplement: req.body.typeImplement,
     faculty: studentData.faculty,
     phone: studentData.phone,
@@ -72,16 +73,21 @@ function saveLoan(req, res) {
 };
 
 function getAllLoan(req, res) {
-  loan.find({}, '-_id -__v', function (err, doc) {
+  loan_play.find({}, '-_id -__v', function (err, doc) {
+    res.status(200).jsonp(doc)
+  })
+};
+
+function getActualLoans(req, res) {
+  loan_play.find({state: "Activo"}, '-_id -__v', function (err, doc) {
     res.status(200).jsonp(doc)
   })
 };
 
 
-
 module.exports = {
   saveLoan: saveLoan,
   getSanction: getSanction,
-  getAllLoan: getAllLoan
-
+  getAllLoan: getAllLoan,
+  getActualLoans: getActualLoans
 }

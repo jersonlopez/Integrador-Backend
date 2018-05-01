@@ -6,6 +6,10 @@ let loanSchemaJSON = {
       required: true,
       unique:true
     },
+    state: { 
+      type: String, 
+      required: true 
+    },
     name: { 
       type: String, 
       required: true 
