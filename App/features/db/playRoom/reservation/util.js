@@ -7,6 +7,7 @@ const modelReservation = require('./model')
 
 let reservation = modelReservation.getReservation()
 let studentData
+let sendEmail = require('./send')
 
 async function saveReservation(req, res) {
 
@@ -65,8 +66,8 @@ async function saveReservation(req, res) {
         until: until
     })
     newReservation.save(function (err, success) {
-        //console.log(err)
-    })
+        console.log(err)
+    }).then(sendEmail.sendMail(studentData, req.body))
 
     while (i < req.body.companion.length) {
 
@@ -92,8 +93,9 @@ async function saveReservation(req, res) {
         i++
     }
     res.send({
-        "message": "RESERVACION GUARDADA"
-    })
+        "message": "RESERVACION GUARDADA" 
+    })   
+
 };
 
 
