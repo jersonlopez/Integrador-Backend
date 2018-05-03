@@ -1,11 +1,13 @@
 const modelLoan = require('./model')
 const modelDevolution = require('../devolution/model')
 const modelRegister = require('../register/model')
+const modelImplement = require('../implement/model')
 const { studentInformation, facultyInformation } = require('../../../consumptionMares/consumptionMares')
 
 let devolution = modelDevolution.getDevolution()
 let loan = modelLoan.getLoan()
 let register = modelRegister.getRegister()
+let implement = modelImplement.getImplements()
 let studentData
 
 
@@ -48,24 +50,29 @@ async function getSanction(req, res) {  //localhost:3000/v1/getDevolution   METO
 };
 
 
-function saveLoan(req, res) {
+async function saveLoan(req, res) {
   let oldLoan;
   let oldServiceRendered, oldQuantityDevolution;
-  let newLoan = new loan({
-    id: studentData.id, state : "Activo", name: studentData.name, typeImplement: req.body.typeImplement, faculty: studentData.faculty,
-    phone: studentData.phone, attendant: req.body.attendant,email: studentData.email, loanDate: new Date().getTime()
-  })
-  newLoan.save(function (err, success) {
-    console.log(err);
-  })
-  register.find({ typeImplement: req.body.typeImplement }, '-__v', function (err, doc) {
+  let doc1 = await implement.find({ typeImplement: req.body.typeImplement }, '-__v')
+  if (doc1[0].quantity < req.body.quantity ) {
+    res.send({ "message": "No hay implementos disponibles en este momento" })
+  } else {
+    await implement.findOneAndUpdate({ typeImplement: req.body.typeImplement }, { $set: { quantity: doc1[0].quantity - req.body.quantity } }, function (err) {
 
+    });
+    let newLoan = new loan({
+      id: studentData.id, state: "Activo", name: studentData.name, typeImplement: req.body.typeImplement, faculty: studentData.faculty,
+      phone: studentData.phone, attendant: req.body.attendant, email: studentData.email, loanDate: new Date().getTime(), quantity: req.body.quantity
+    })
+    newLoan.save(function (err, success) {
+      console.log(err);
+    })
+    let doc = await register.find({ typeImplement: req.body.typeImplement }, '-__v')
 
-    register.findOneAndUpdate({ _id: doc[doc.length-1]._id }, { $set: { quantityLoan: doc[0].quantityLoan + 1 } }, function (err) {
+    register.findOneAndUpdate({ _id: doc[doc.length - 1]._id }, { $set: { quantityLoan: doc[0].quantityLoan + 1 } }, function (err) {
       res.send({ "message": "Prestamo efectuado exitosamente" })
     });
-
-  });
+  }
 };
 
 
@@ -77,7 +84,7 @@ function getAllLoan(req, res) {
 };
 
 function getActualLoans(req, res) {
-  loan.find({state: "Activo"}, '-_id -__v', function (err, doc) {
+  loan.find({ state: "Activo" }, '-_id -__v', function (err, doc) {
     res.status(200).jsonp(doc)
   })
 };
@@ -88,6 +95,6 @@ module.exports = {
   saveLoan: saveLoan,
   getSanction: getSanction,
   getAllLoan: getAllLoan,
-  getActualLoans : getActualLoans
+  getActualLoans: getActualLoans
 
 }

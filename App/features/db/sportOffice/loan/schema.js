@@ -36,6 +36,10 @@ let loanSchemaJSON = {
   email: { 
     type: String, 
     required: true 
+  },
+  quantity: { 
+    type: Number, 
+    required: true 
   }
 }
 
