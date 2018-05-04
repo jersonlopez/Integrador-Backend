@@ -10,7 +10,6 @@ let studentData
 
 async function saveReservation(req, res) {
 
-    let i = 0;
     let rule = 4 * 3600000
     let until = new Date().getTime() + rule
 
@@ -31,22 +30,31 @@ async function saveReservation(req, res) {
                 }
             }
         }
-    })
+    });
 
     reservation.find({ id: req.body.id }, '-_id -__v -attendant -typeImplement -observation', function (err, doc) {
+
         if (doc.length > 0) {
+            let rightNow = new Date().getTime()
             let untilUser = doc[doc.length - 1].until
-            if (parseInt(untilUser) > 0) {
-                console.log(`${untilUser.toLocaleString()}`);
-                res.send({ "message": "Ya tiene una reserva agendada; no puede hacer más reservas hasta: " + new Date(untilUser).toLocaleString() });
-                return
+            if (parseInt(rightNow) <= parseInt(untilUser)) {
+                res.send({ "message": "Ya tiene una reserva agendada; no puede hacer más reservas" });
+            } else {
+                sendReservation(req, res, until)
             }
-        };
+        } else {
+            sendReservation(req, res, until)
+        }
     });
+};
+
+
+async function sendReservation(req, res, until) {
+    let i = 0;
 
     await studentInformation(req.body.id).then((data) => {
         studentData.name = data.data[0].nombre + " " + data.data[0].apellidos
-        studentData.phone = data.data[0].telefonoe
+        studentData.phone = data.data[0].telefono
         studentData.email = data.data[0].emailInstitucional
     })
 
@@ -93,7 +101,7 @@ async function saveReservation(req, res) {
     res.send({
         "message": "RESERVACION GUARDADA"
     })
-};
+}
 
 
 
