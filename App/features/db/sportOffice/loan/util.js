@@ -89,12 +89,24 @@ function getActualLoans(req, res) {
   })
 };
 
+function getLatestLoans(req, res) {
+  loan.find({}, '-_id -__v', function (err, doc) {
+    let doc1 = new Array;
+    let i;
+    for(i = 0; i<10; i++){
+      doc1[i] = doc[i]
+    } 
+    res.status(200).jsonp(doc1)
+  })
+};
+
 
 
 module.exports = {
   saveLoan: saveLoan,
   getSanction: getSanction,
   getAllLoan: getAllLoan,
-  getActualLoans: getActualLoans
+  getActualLoans: getActualLoans,
+  getLatestLoans : getLatestLoans
 
 }
