@@ -54,11 +54,14 @@ function deleteImplement(req, res) {
       let oldQuantity;
       oldQuantity = doc[0].quantity;
       updateQuantity = parseInt(doc[0].quantity) - parseInt(req.body.quantity)
-      if(req.body.quantity.length <= oldQuantity.length){
+      if(req.body.quantity <= oldQuantity){
       implement_play.findOneAndUpdate({ _id: doc[0]._id }, { $set: { quantity: updateQuantity } }, function (err) {
         res.send({ "message": `Cantidad de ${req.body.typeImplement} Actulizada` })
       })
     }
+      else{
+        res.send({ "message": `Cantidad de ${req.body.typeImplement} ingresada es invalida` })
+      }    
     }
 })
 }

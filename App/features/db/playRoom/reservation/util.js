@@ -66,8 +66,14 @@ async function saveReservation(req, res) {
         until: until
     })
     newReservation.save(function (err, success) {
-        console.log(err)
-    }).then(sendEmail.sendMail(studentData, req.body))
+        if (err) {
+            console.log(err)      
+        }
+    
+        if (success) {
+            sendEmail.sendMail(studentData, req.body)            
+        }
+    })
 
     while (i < req.body.companion.length) {
 
