@@ -91,12 +91,35 @@ function getActualLoans(req, res) {
 
 function getLatestLoans(req, res) {
   loan.find({}, '-_id -__v', function (err, doc) {
-    let doc1 = new Array;
-    let i;
-    for(i = 0; i<10; i++){
-      doc1[i] = doc[i]
-    } 
-    res.status(200).jsonp(doc1)
+    let tam = doc.length - 10;
+    let i, j, k;
+    let ti;
+    let quantityImplement = 0;
+    let registerRecord = [];
+    i = tam
+    while (i < doc.length) {
+      j = i;
+      while (j < doc.length) {
+        if (doc[i].typeImplement === doc[j].typeImplement) {
+          quantityImplement = quantityImplement + 1;
+        }
+        j = j + 1;
+      }
+      let ban = true;
+      k = 0;
+      while (k < registerRecord.length) {
+        if (registerRecord[k].typeImplement === doc[i].typeImplement) {
+          ban = false;
+        }
+        k = k + 1;
+      }
+      if(ban){
+        registerRecord.push({typeImplement: doc[i].typeImplement, quantity: quantityImplement})
+      }
+      quantityImplement = 0;
+      i = i + 1; 
+    }
+    res.status(200).jsonp(registerRecord)
   })
 };
 
