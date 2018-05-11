@@ -24,6 +24,11 @@ router.route('/sports/activeLoans')
     utilLoan.getActualLoans(...args)
 })
 
+router.route('/sports/latestLoans')
+  .get((...args) => {
+    utilLoan.getLatestLoans(...args)
+})
+
 
 
 

@@ -19,9 +19,11 @@ function singIn (req, res){
   user.find({userName: req.body.userName, password:req.body.password}, '-__v ', function (err, doc) {
       if(doc.length > 0){
           let jobUser = doc[0].job; 
+          let username = doc[0].userName; 
+
           let token = generateToken.createToken(doc)
           console.log(token)
-          res.send({"job" : jobUser})
+          res.send({"job" : jobUser, "username" : username})
       }else{
           res.send({"message" : "Usuario o contraseña incorrecta"})
       }
