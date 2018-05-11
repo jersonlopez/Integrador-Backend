@@ -19,7 +19,7 @@ router.route('/sports/item')
     utilImplement.getByImplement(...args)
 })
 
-router.route('/sports/items/:typeImplement')
+router.route('/sports/items/')
   .delete((...args) => {
     utilImplement.deleteImplement(...args)
  })
