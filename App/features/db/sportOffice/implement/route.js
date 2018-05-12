@@ -19,9 +19,14 @@ router.route('/sports/item')
     utilImplement.getByImplement(...args)
 })
 
-router.route('/sports/items/')
+router.route('/sports/items/:typeImplement')
   .delete((...args) => {
     utilImplement.deleteImplement(...args)
+ })
+
+ router.route('/sports/decreaseItems')
+  .post((...args) => {
+    utilImplement.decreaseImplement(...args)
  })
 
 
