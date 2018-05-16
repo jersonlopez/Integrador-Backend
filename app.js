@@ -1,6 +1,6 @@
 const express = require('express')
 
-const {schedule} = require("./App/features/db/sportOffice/schedule/schedule")
+const {schedule} = require("./App/features/db/schedule/schedule")
 const {db} = require("./conection")
 
 let app = new express()

@@ -12,6 +12,7 @@ let routeDevolution = require('./features/db/sportOffice/devolution/route')
 let routeImplementSports= require('./features/db/sportOffice/implement/route')  
 let routeLoan = require('./features/db/sportOffice/loan/route')  
 let routeRegister = require('./features/db/sportOffice/register/route') 
+let routeRegisterPlayRoom = require('./features/db/playRoom/register/route') 
 
 let router = new Router()
 
@@ -25,5 +26,7 @@ router.use('/v1', routeDevolution)
 router.use('/v1', routeImplementSports)
 router.use('/v1', routeLoan)
 router.use('/v1', routeRegister)
+router.use('/v1', routeRegisterPlayRoom)
+
 
 module.exports = router

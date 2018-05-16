@@ -14,9 +14,7 @@ let studentData
 
 async function getSanction(req, res) {  //localhost:3000/v1/getDevolution   METODO get devuelve un json con la fecha del ultimo prestamo (implemento a devolver) tipo de implemento id.
   let sanctionTime;
-
   await studentInformation(req.body.id).then((data) => {
-
     if (data.data.length == 0) {
       res.send({ "message": "Por favor ingrese una cedula valida" })
     } else {
@@ -58,11 +56,18 @@ async function saveLoan(req, res) {
     res.send({ "message": "No hay implementos disponibles en este momento" })
   } else {
     await implement.findOneAndUpdate({ typeImplement: req.body.typeImplement }, { $set: { quantity: doc1[0].quantity - req.body.quantity } }, function (err) {
-
     });
     let newLoan = new loan({
-      id: studentData.id, state: "Activo", name: studentData.name, typeImplement: req.body.typeImplement, faculty: studentData.faculty,
-      phone: studentData.phone, attendant: req.body.attendant, email: studentData.email, loanDate: new Date().getTime(), quantity: req.body.quantity
+      id: studentData.id,
+      state: "Activo", 
+      name: studentData.name, 
+      typeImplement: req.body.typeImplement, 
+      faculty: studentData.faculty,
+      phone: studentData.phone, 
+      attendant: req.body.attendant, 
+      email: studentData.email, 
+      loanDate: new Date().getTime(), 
+      quantity: req.body.quantity
     })
     newLoan.save(function (err, success) {
       console.log(err);

@@ -22,25 +22,22 @@ function getSanction(id) {
 };
 
 async function saveDevolution(req, res) {
+  bandera = false;
   await loan.find({ typeImplement: req.body.typeImplement, state: "Activo", id: req.body.id }, '-__v', function (err, doc) {
     if (doc.length === 0) {
-      console.log(doc);
-      
-      res.send({ "message": "Por favor ingresa una cedula valida" })
-
+      this.bandera = true;
+      res.send({ "message": "Por favor ingresa una cédula valida" })
     } else {
       loan.findOneAndUpdate({ _id: doc[doc.length - 1]._id }, { $set: { state: "Inactivo" } }, function (err) {
       });
-
-
     }
     implementSports.find({ typeImplement: req.body.typeImplement }, '-_id -__v', function (err, doc) {
       implementSports.findOneAndUpdate({ typeImplement: req.body.typeImplement }, { $set: { quantity: doc[0].quantity + req.body.quantity } }, function (err) {
       })
     });
-
-
   });
+  
+  if(bandera){return}
   let oldDevolution;
   let loanDate = await getSanction(req.body.id)
   loanDate = loanDate[loanDate.length - 1].loanDate
@@ -60,7 +57,6 @@ async function saveDevolution(req, res) {
     register.findOneAndUpdate({ _id: doc[0]._id }, { $set: { quantityDevolution: doc[0].quantityDevolution + 1 } }, function (err) {
     });
   });
-
   if (sanction > 0) {
     newDevolution.save(function () {
       res.send({ "message": "Devolucion efectuada exitosamente, SANCION DE: " + sanction + " dias." });

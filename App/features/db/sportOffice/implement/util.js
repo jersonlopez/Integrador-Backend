@@ -4,7 +4,7 @@ let modelRegister = require('../register/model')
 implement = modelImplement.getImplements()
 register = modelRegister.getRegister()
 
-function saveImplements(req, res) { // función para guardar implemento
+function saveImplements(req, res) {
   implement.find({ typeImplement: req.body.typeImplement }, '-__v', function (err, doc) {
 
     if (doc.length !== 0) {
@@ -56,7 +56,6 @@ function getByImplement(req, res) {
 
 function decreaseImplement(req, res) {
   implement.find({ typeImplement: req.body.typeImplement }, '-__v', function (err, doc) {
-
     if (doc.length !== 0) {
       let updateQuantity;
       let oldQuantity;
@@ -68,15 +67,13 @@ function decreaseImplement(req, res) {
         })
       }
       else {
-        res.send({ "message": `Cantidad de ${req.body.typeImplement} ingresada es invalida` })
+        res.send({ "message": `La cantidad de ${req.body.typeImplement} ingresada es invalida` })
       }
     }
   })
 }
 
 function deleteImplement(req, res) {
-  console.log(req.params.typeImplement);
-  
   implement.findOneAndRemove({typeImplement: req.params.typeImplement}, function(err) {
       if (!err) {
         res.send({ "message": "Implemento eliminado correctamente" });

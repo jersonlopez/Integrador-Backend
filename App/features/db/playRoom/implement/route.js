@@ -14,10 +14,15 @@ router.route('/playRoom/items')
     utilImplement.getAllImplements(...args)
 })
 
-router.route('/playRoom/items/')
+router.route('/playRoom/items/:typeImplement')
   .delete((...args) => {
     utilImplement.deleteImplement(...args)
  })
+
+ router.route('/playRoom/decreaseItems')
+ .post((...args) => {
+   utilImplement.decreaseImplement(...args)
+})
 
 
 module.exports = router

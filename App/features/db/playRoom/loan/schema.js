@@ -3,8 +3,7 @@
 let loanSchemaJSON = {
     id: { 
       type: String, 
-      required: true,
-      unique:true
+      required: true
     },
     state: { 
       type: String, 
@@ -42,6 +41,10 @@ let loanSchemaJSON = {
         type: String,
         required: true
     },
+    quantity: { 
+      type: Number, 
+      required: true 
+    }
   }
   
   function getLoanSchema() {
