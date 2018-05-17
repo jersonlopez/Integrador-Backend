@@ -7,7 +7,7 @@ user = model.getUser()
 
 function saveUser (req, res) { // función para guardar implemento
   let newUser = new user({
-     name: req.body.user, userName: req.body.userName, password: req.body.password, job: "Auxiliar", office : req.body.office 
+     name: req.body.name, userName: req.body.userName, password: req.body.password, job: "Auxiliar", office : req.body.office 
   })
 
   newUser.save(function () {
@@ -19,10 +19,11 @@ function signIn (req, res){
   user.find({userName: req.body.userName, password:req.body.password}, '-__v ', function (err, doc) {
       if(doc.length > 0){
           let jobUser = doc[0].job; 
+          let officeUser = doc[0].office;
           let username = doc[0].userName;
           let token = generateToken.createToken(doc)
           console.log(token)
-          res.send({"job" : jobUser, "username": username})
+          res.send({"job" : jobUser, "username": username, "office":officeUser})
       }else{
           res.send({"message" : "Usuario o contraseña incorrecta"})
       }
@@ -30,10 +31,48 @@ function signIn (req, res){
   });
 }
 
+function getAllSportsUsers(req, res) {
+  user.find({}, '-_id -__v ', function (err, doc) {
+    let i;
+    let sportsUser = [];
+    for (i = 0; i < doc.length; i++) {
+      if (doc[i].office === "ImplementosDeportivos") {
+        sportsUser.push(doc[i])
+      }
+    }
+    res.send(sportsUser)
+
+  });
+}
+
+function getAllPlayRoomUsers(req, res) {
+  user.find({}, '-_id -__v ', function (err, doc) {
+    let i;
+    let playRoomUser = [];
+    for (i = 0; i < doc.length; i++) {
+      if (doc[i].office === "Ludoteca") {
+        playRoomUser.push(doc[i])
+      }
+    }    
+    res.send(playRoomUser)
+  });
+}
+
+function deleteUser(req, res) {
+  user.findOneAndRemove({userName: req.params.userName}, function(err) {
+      if (!err) {
+        res.send({ "message": "usuario eliminado correctamente" });
+      }
+    });
+};
 
 module.exports = { // Exporta todos los metodos
   saveUser: saveUser, 
-  signIn : signIn
+  signIn : signIn,
+  getAllSportsUsers : getAllSportsUsers,
+  getAllPlayRoomUsers : getAllPlayRoomUsers,
+  deleteUser : deleteUser
+  
 }
 
 

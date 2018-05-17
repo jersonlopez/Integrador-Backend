@@ -15,4 +15,21 @@ router.route('/login')
   utilUser.signIn(...args)
 })
 
+
+router.route('/sports/users')
+.get((...args) => {
+  utilUser.getAllSportsUsers(...args)
+})
+
+
+router.route('/playRoom/users')
+.get((...args) => {
+  utilUser.getAllPlayRoomUsers(...args)
+})
+
+router.route('/user/:userName')
+  .delete((...args) => {
+    utilUser.deleteUser(...args)
+ })
+
 module.exports = router
