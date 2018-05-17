@@ -69,7 +69,7 @@ async function saveDevolution(req, res) {
 };
 
 function getAllDevolution(req, res) {
-  devolution.find({}, '-_id -__v', function (err, doc) {
+  devolution_play.find({}, '-_id -__v', function (err, doc) {
     res.status(200).jsonp(doc)
   })
 }

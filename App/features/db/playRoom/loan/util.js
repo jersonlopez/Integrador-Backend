@@ -101,12 +101,14 @@ function getActualLoans(req, res) {
 
 function getLatestLoans(req, res) {
   loan_play.find({}, '-_id -__v', function (err, doc) {
-    let tam = doc.length - 10;
+    let tam = doc.length - 5;
     let i, j, k;
     let ti;
     let quantityImplement = 0;
     let registerRecord = [];
     i = tam
+    //console.log(doc);
+    
     while (i < doc.length) {
       j = i;
       while (j < doc.length) {
@@ -129,6 +131,8 @@ function getLatestLoans(req, res) {
       quantityImplement = 0;
       i = i + 1; 
     }
+    console.log(registerRecord);
+    
     res.status(200).jsonp(registerRecord)
   })
 };

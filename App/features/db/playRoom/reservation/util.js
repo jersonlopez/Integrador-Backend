@@ -113,7 +113,7 @@ async function sendReservation(req, res, until) {
 
 
 function getAllReservation(req, res) {
-    loan.find({}, '-_id -__v', function (err, doc) {
+    reservation.find({}, '-_id -__v', function (err, doc) {
         res.status(200).jsonp(doc)
     })
 };

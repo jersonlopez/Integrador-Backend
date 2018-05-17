@@ -7,7 +7,7 @@ user = model.getUser()
 
 function saveUser (req, res) { // función para guardar implemento
   let newUser = new user({
-     name: "felipe", userName: "pipe10", password: "1234", job: "Administrador"
+     name: req.body.user, userName: req.body.userName, password: req.body.password, job: "Auxiliar", office : req.body.office 
   })
 
   newUser.save(function () {
@@ -15,7 +15,7 @@ function saveUser (req, res) { // función para guardar implemento
   })
 };
 
-function singIn (req, res){
+function signIn (req, res){
   user.find({userName: req.body.userName, password:req.body.password}, '-__v ', function (err, doc) {
       if(doc.length > 0){
           let jobUser = doc[0].job; 
@@ -33,7 +33,7 @@ function singIn (req, res){
 
 module.exports = { // Exporta todos los metodos
   saveUser: saveUser, 
-  singIn : singIn
+  signIn : signIn
 }
 
 

@@ -12,7 +12,7 @@ router.route('/user')
 
 router.route('/login')
 .post((...args) => {
-  utilUser.singIn(...args)
+  utilUser.signIn(...args)
 })
 
 module.exports = router
