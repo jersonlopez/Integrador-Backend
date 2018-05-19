@@ -74,11 +74,11 @@ async function sendReservation(req, res, until) {
     })
     newReservation.save(function (err, success) {
         if (err) {
-            console.log(err)      
+            console.log(err)
         }
-    
+
         if (success) {
-            sendEmail.sendMail(studentData, req.body)            
+            sendEmail.sendMail(studentData, req.body)
         }
     })
 
@@ -110,6 +110,32 @@ async function sendReservation(req, res, until) {
     })
 }
 
+async function getReservationByDayByConsole(req, res) {
+    let type = req.body.typeConsole
+    let date = req.body.resevationDate
+
+    reservation.find({ typeConsole: type, resevationDate: date }, '-_id -__v', function (err, doc) {
+
+        if (doc.length > 0) {
+            res.send(doc);
+        } else {
+            res.send({ "message": "No hay reservas" });
+        }
+    });
+};
+
+async function getReservationByDay(req, res) {
+    let date = req.body.resevationDate
+
+    reservation.find({ resevationDate: date }, '-_id -__v', function (err, doc) {
+
+        if (doc.length > 0) {
+            res.send(doc);
+        } else {
+            res.send({ "message": "No hay reservas" });
+        }
+    });
+};
 
 
 function getAllReservation(req, res) {
@@ -122,5 +148,7 @@ function getAllReservation(req, res) {
 
 module.exports = {
     saveReservation,
-    getAllReservation
+    getAllReservation,
+    getReservationByDayByConsole,
+    getReservationByDay
 }
