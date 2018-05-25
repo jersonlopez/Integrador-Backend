@@ -73,20 +73,20 @@ async function sendReservation(req, res, until) {
         until: until
     })
 
-    reservation.find({ hourIn: req.body.hourIn }, '-_id -__v -name -id -typeConsole -phone -controlQuantity', function (err, doc) {
+    reservation.find({ hourIn: req.body.hourIn, resevationDate: req.body.resevationDate }, '-_id -__v -name -id -typeConsole -phone -controlQuantity', function (err, doc) {
 
         if (doc.length > 0) {
+            res.send({
+                "message": "Esta hora ya esta reservada"
+            })
+        } else {            
             newReservation.save(function (err, success) {
                 if (err) {
                     console.log(err)
                 }
-                if (success) {
+                if (success) {                   
                     sendEmail.sendMail(studentData, req.body)
                 }
-            })
-        } else {
-            res.send({
-                "message": "Esta hora ya esta reservada"
             })
         }
     });
