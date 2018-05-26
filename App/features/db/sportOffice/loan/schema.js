@@ -5,6 +5,10 @@ let loanSchemaJSON = {
     type: String, 
     required: true
   },
+  state: { 
+    type: String, 
+    required: true
+  },
   name: { 
     type: String, 
     required: true 
@@ -21,10 +25,6 @@ let loanSchemaJSON = {
     type: String, 
     required: true 
   },
-  serviceRendered: { 
-    type: String, 
-    required: true 
-  },
   attendant: { 
     type: String, 
     required: true 
@@ -35,6 +35,10 @@ let loanSchemaJSON = {
   },
   email: { 
     type: String, 
+    required: true 
+  },
+  quantity: { 
+    type: Number, 
     required: true 
   }
 }

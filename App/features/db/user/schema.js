@@ -4,7 +4,8 @@ let userSchemasJSON = {
     name: String,
     userName : String,
     password: String,
-    job: String
+    job: String,
+    office : String
   }
   
   function getUserSchema () {

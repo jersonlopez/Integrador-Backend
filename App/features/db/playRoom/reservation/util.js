@@ -7,14 +7,14 @@ const modelReservation = require('./model')
 
 let reservation = modelReservation.getReservation()
 let studentData
+let sendEmail = require('./send')
 
 async function saveReservation(req, res) {
-    let i = 0;
+
     let rule = 4 * 3600000
     let until = new Date().getTime() + rule
 
     await authenticacion(req.body.usuario, req.body.clave).then((data) => {
-        console.log(data.data);
 
         if (!!parseInt(data.data) == false) {
             res.send({
@@ -27,11 +27,31 @@ async function saveReservation(req, res) {
                 })
             } else {
                 studentData = {
-                    id: data.data
+                    id: parseInt(data.data)
                 }
             }
         }
-    })
+    });
+
+    reservation.find({ id: req.body.id }, '-_id -__v -attendant -typeImplement -observation', function (err, doc) {
+
+        if (doc.length > 0) {
+            let rightNow = new Date().getTime()
+            let untilUser = doc[doc.length - 1].until
+            if (parseInt(rightNow) <= parseInt(untilUser)) {
+                res.send({ "message": "Ya tiene una reserva agendada; no puede hacer más reservas" });
+            } else {
+                sendReservation(req, res, until)
+            }
+        } else {
+            sendReservation(req, res, until)
+        }
+    });
+};
+
+
+async function sendReservation(req, res, until) {
+    let i = 0;
 
     await studentInformation(req.body.id).then((data) => {
         studentData.name = data.data[0].nombre + " " + data.data[0].apellidos
@@ -52,9 +72,24 @@ async function saveReservation(req, res) {
         role: "Responsable",
         until: until
     })
-    newReservation.save(function (err, success) {
-        //console.log(err)
-    })
+
+    reservation.find({ hourIn: req.body.hourIn, resevationDate: req.body.resevationDate }, '-_id -__v -name -id -typeConsole -phone -controlQuantity', function (err, doc) {
+
+        if (doc.length > 0) {
+            res.send({
+                "message": "Esta hora ya esta reservada"
+            })
+        } else {            
+            newReservation.save(function (err, success) {
+                if (err) {
+                    console.log(err)
+                }
+                if (success) {                   
+                    sendEmail.sendMail(studentData, req.body)
+                }
+            })
+        }
+    });
 
     while (i < req.body.companion.length) {
 
@@ -76,18 +111,44 @@ async function saveReservation(req, res) {
             role: "Acompañante",
             until: until
         })
-        newReservation.save(function () {})
+        newReservation.save(function () { })
         i++
     }
     res.send({
         "message": "RESERVACION GUARDADA"
     })
+}
+
+async function getReservationByDayByConsole(req, res) {
+    let type = req.body.typeConsole
+    let date = req.body.resevationDate
+
+    reservation.find({ typeConsole: type, resevationDate: date }, '-_id -__v', function (err, doc) {
+
+        if (doc.length > 0) {
+            res.send(doc);
+        } else {
+            res.send({ "message": "No hay reservas" });
+        }
+    });
+};
+
+async function getReservationByDay(req, res) {
+    let date = req.body.resevationDate
+
+    reservation.find({ resevationDate: date }, '-_id -__v', function (err, doc) {
+
+        if (doc.length > 0) {
+            res.send(doc);
+        } else {
+            res.send({ "message": "No hay reservas" });
+        }
+    });
 };
 
 
-
 function getAllReservation(req, res) {
-    loan.find({}, '-_id -__v', function (err, doc) {
+    reservation.find({}, '-_id -__v', function (err, doc) {
         res.status(200).jsonp(doc)
     })
 };
@@ -96,5 +157,7 @@ function getAllReservation(req, res) {
 
 module.exports = {
     saveReservation,
-    getAllReservation
+    getAllReservation,
+    getReservationByDayByConsole,
+    getReservationByDay
 }

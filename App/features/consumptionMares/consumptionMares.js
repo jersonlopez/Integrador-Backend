@@ -10,7 +10,7 @@ async function facultyInformation(req) {
       cedula: req
     })
   } catch (error) {
-    console.log(error);
+    console.log('ha ocurrido un error en la conexion a mares: \n' + error);
 
   }
 }
@@ -21,7 +21,7 @@ async function studentInformation(req) {
       cedula: req
     })
   } catch (error) {
-    console.log(error);
+    console.log('ha ocurrido un error en la conexion a mares: \n' + error);
 
   }
 }
@@ -33,7 +33,7 @@ async function authenticacion(user, password) {
       clave: password
     })
   } catch (error) {
-    console.log(error);
+    console.log('ha ocurrido un error en la conexion a mares: \n' + error);
 
   }
 }

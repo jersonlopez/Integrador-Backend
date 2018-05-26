@@ -9,10 +9,6 @@ let devolutionSchemaJSON = {
       type: String, 
       required: true 
     },
-    observation: { 
-      type: String, 
-      required: true 
-    },
     attendant: { 
       type: String, 
       required: true 
@@ -26,6 +22,10 @@ let devolutionSchemaJSON = {
       required: true 
     },
     devolutionDate: { 
+      type: Number, 
+      required: true 
+    },
+    quantity: { 
       type: Number, 
       required: true 
     }

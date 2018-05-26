@@ -19,5 +19,14 @@ router.route('/playRoom/loans')
     utilLoan.getAllLoan(...args)
 })
 
+router.route('/playRoom/activeLoans')
+  .get((...args) => {
+    utilLoan.getActualLoans(...args)
+})
+
+router.route('/playRoom/latestLoans')
+  .get((...args) => {
+    utilLoan.getLatestLoans(...args)
+})
 
 module.exports = router

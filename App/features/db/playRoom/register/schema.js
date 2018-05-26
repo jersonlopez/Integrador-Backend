@@ -2,6 +2,7 @@
 
 let registerSchemaJSON = { 
     typeImplement: String,
+    category: String,
     quantityLoan: Number,
     quantityDevolution: Number
   }

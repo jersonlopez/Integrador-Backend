@@ -4,7 +4,7 @@ let modelRegister = require('../register/model')
 implement = modelImplement.getImplements()
 register = modelRegister.getRegister()
 
-function saveImplements(req, res) { // función para guardar implemento
+function saveImplements(req, res) {
   implement.find({ typeImplement: req.body.typeImplement }, '-__v', function (err, doc) {
 
     if (doc.length !== 0) {
@@ -12,8 +12,8 @@ function saveImplements(req, res) { // función para guardar implemento
       let oldQuantity;
       oldQuantity = doc[0].quantity;
       updateQuantity = parseInt(doc[0].quantity) + parseInt(req.body.quantity)
-      
-      implement.findOneAndUpdate({ _id: doc[0]._id}, {$set:{quantity: updateQuantity }}, function (err) {
+
+      implement.findOneAndUpdate({ _id: doc[0]._id }, { $set: { quantity: updateQuantity } }, function (err) {
         res.send({ "message": `Cantidad de ${req.body.typeImplement} Actulizada` })
       })
     } else {
@@ -43,17 +43,48 @@ function getAllImplements(req, res) {
   })
 };
 
+function getByImplement(req, res) {
+  implement.find({ typeImplement: req.body.typeImplement }, '-_id -__v', function (err, doc) {
+    if (doc.length === 0) {
+      res.send({ "message": "No se encuentra este implemento en nuestro inventario" })
+    } else {
+      res.status(200).jsonp(doc)
+    }
+
+  })
+}
+
+function decreaseImplement(req, res) {
+  implement.find({ typeImplement: req.body.typeImplement }, '-__v', function (err, doc) {
+    if (doc.length !== 0) {
+      let updateQuantity;
+      let oldQuantity;
+      oldQuantity = doc[0].quantity;
+      updateQuantity = parseInt(doc[0].quantity) - parseInt(req.body.quantity)
+      if (req.body.quantity < oldQuantity) {
+        implement.findOneAndUpdate({ _id: doc[0]._id }, { $set: { quantity: updateQuantity } }, function (err) {
+          res.send({ "message": `Cantidad de ${req.body.typeImplement} Actulizada` })
+        })
+      }
+      else {
+        res.send({ "message": `La cantidad de ${req.body.typeImplement} ingresada es invalida` })
+      }
+    }
+  })
+}
 
 function deleteImplement(req, res) {
-  implement.findOneAndRemove({ typeImplement: req.params.typeImplement }, function (err) {
-    if (!err) {
-      res.send({ "message": "Implemento eliminado correctamente" });
-    }
-  });
-}
+  implement.findOneAndRemove({typeImplement: req.params.typeImplement}, function(err) {
+      if (!err) {
+        res.send({ "message": "Implemento eliminado correctamente" });
+      }
+    });
+};
 
 module.exports = { // Exporta todos los metodos
   saveImplements: saveImplements,
   getAllImplements: getAllImplements,
-  deleteImplement: deleteImplement
+  deleteImplement: deleteImplement,
+  getByImplement: getByImplement,
+  decreaseImplement : decreaseImplement
 }
