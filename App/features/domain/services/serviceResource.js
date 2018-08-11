@@ -5,37 +5,40 @@ let {register} = require('../entities/Register')
 let {save, update,find} = require('../repository/crud')
 
 let saveResource = async (req) => {
-    let filter = { typeImplement: req.typeImplement }
+    let filter = { name: req.name }
     let projection = '-__v'
     let doc = await find(resource ,filter, projection)
-
+    
     if (doc.length !== 0) {
+      console.log("oe entre el if");
+      
         let updateQuantity;
         updateQuantity = parseInt(doc[0].quantity) + parseInt(req.quantity)
-
+        console.log(updateQuantity);
+        
         let filterUpdate = { _id: doc[0]._id }
         let set = { $set: { quantity: updateQuantity } }
   
-        let upgrade = await update(resource ,filterUpdate, set)
+        let upgrade = update(resource ,filterUpdate, set)
         return { "message": `Cantidad de ${req.typeImplement} Actulizada` }
       } else {
         let resource = new resource({
-            typeImplement: req.body.typeImplement, quantity: req.body.quantity
+            typeResource: req.typeResource, name: req.name, quantity: req.quantity
           })
 
-        let keepResource = await save(resource)  
+        let keepResource =await save(resource)  
 
         let register = new register({
-          typeImplement: req.body.typeImplement, quantityLoan: 0, quantityDevolution: 0, quantityServiceRendered: 0
+          typeResource: req.typeResource, quantityLoan: 0, quantityDevolution: 0, quantityServiceRendered: 0
         })
 
-        let keep = await save(register)
+        let keep = await  save(register)
         return { "message": "Implemento guardado exitosamente" }
       }
 
 };
 
-let getAllResouces = () => {
+let getAllResouces = async () => {
     let filter = {}
     let projection = '-_id -__v'
 

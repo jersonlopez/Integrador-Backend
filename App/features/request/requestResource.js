@@ -1,14 +1,17 @@
 'use strict'
 let {saveResource, getAllResouces} = require('../domain/services/serviceResource')
 
-let save = (req, res) => {
+let save = async (req, res) => {
     let data = req.body
-    console.log("\nentre al save!!!!!!!!!!!!!!!!!!!!!!!!\n")    
-    res.send(saveResource(data))
+    console.log("\nentre al save!!!!!!!!!!!!!!!!!!!!!!!!\n")
+    console.log('"""""""get """""""""\n')
+    console.log(await saveResource(data),'\n')
+    console.log('""""""""""""""""\n')   
+    res.send(await saveResource(data))
 }
 
-let get = (req, res) => {
-    res.send(getAllResouces())
+let get = async (req, res) => {
+    res.send(await getAllResouces())
 }
 
 module.exports = {

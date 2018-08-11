@@ -4,10 +4,9 @@ let save = async (object) => {
         if (err) console.log(err);
     })
     return query.exec()
-    
 }
 
-let find = async (object, filter, projection) => {
+let find = (object, filter, projection) => {
     let query = object.find(filter, projection, (err, success) => {
         if (err) console.log(err);
     })
@@ -20,9 +19,6 @@ let update = (object, name) => {
     })
     return query.exec()
 }
-
-
-
 
 module.exports = {
     save,
