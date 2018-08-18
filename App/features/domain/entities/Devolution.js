@@ -7,7 +7,7 @@ let devolutionSchemaJSON = {
       type: String, 
       required: true
     },
-    typeImplement: { 
+    typeResource: { 
       type: String, 
       required: true 
     },

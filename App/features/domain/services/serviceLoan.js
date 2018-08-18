@@ -74,7 +74,6 @@ let saveLoan = async (req) => {
 };
 
 
-
 let getAllLoan = async ()=> {
   let filter = {}
   let projection = '-_id -__v'
