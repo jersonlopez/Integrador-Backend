@@ -1,12 +1,8 @@
 'use strict'
-let {saveResource, getAllResouces} = require('../domain/services/serviceResource')
+let {saveResource, decreaseImplement, getAllResouces, deleteImplement} = require('../domain/services/serviceResource')
 
 let save = async (req, res) => {
     let data = req.body
-    console.log("\nentre al save!!!!!!!!!!!!!!!!!!!!!!!!\n")
-    console.log('"""""""get """""""""\n')
-    console.log(await saveResource(data),'\n')
-    console.log('""""""""""""""""\n')   
     res.send(await saveResource(data))
 }
 
@@ -14,7 +10,18 @@ let get = async (req, res) => {
     res.send(await getAllResouces())
 }
 
+let update = async (req, res) => {
+    let data = req.body
+    res.send(await decreaseImplement(data))
+}
+
+let remove = async (req, res) => {
+    let data = req.body
+    res.send(await deleteImplement(data))
+}
 module.exports = {
     save,
-    get
+    get,
+    update,
+    remove
 }

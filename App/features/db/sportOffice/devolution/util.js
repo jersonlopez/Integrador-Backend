@@ -36,7 +36,6 @@ async function saveDevolution(req, res) {
       })
     });
   });
-  
   if(bandera){return}
   let oldDevolution;
   let loanDate = await getSanction(req.body.id)

@@ -1,12 +1,13 @@
 const Router = require('express').Router
 
-const utilRegister = require('./util')
+const {get} = require('../request/requestRegister')
 
 let router = new Router()
 
-router.route('/sports/registerss')
+router.route('/sports/registers')
   .get((...args) => {
-    utilRegister.getAllRegister(...args)
+    get(...args)
 })
+
 
 module.exports = router

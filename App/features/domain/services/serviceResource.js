@@ -2,7 +2,7 @@
 
 let {resource} = require('../entities/Resource')
 let {register} = require('../entities/Register')
-let {save, update,find} = require('../repository/crud')
+let {save, update, find, remove} = require('../repository/crud')
 
 let saveResource = async (req) => {
     let filter = { name: req.name }
@@ -20,19 +20,23 @@ let saveResource = async (req) => {
         let set = { $set: { quantity: updateQuantity } }
   
         let upgrade = update(resource ,filterUpdate, set)
-        return { "message": `Cantidad de ${req.typeImplement} Actulizada` }
+        return { "message": `Cantidad de ${req.name} Actulizada` }
       } else {
-        let resource = new resource({
-            typeResource: req.typeResource, name: req.name, quantity: req.quantity
+        let resources = new resource({
+          headquarters: req.headquarters, name: req.name, quantity: req.quantity
           })
 
-        let keepResource =await save(resource)  
+        let keepResource =await save(resources) 
+        
+        console.log("#############################\n")
+        console.log(keepResource)
+        console.log("\n#############################\n")
 
-        let register = new register({
-          typeResource: req.typeResource, quantityLoan: 0, quantityDevolution: 0, quantityServiceRendered: 0
+        let registers = new register({
+          resource: req.name, quantityLoan: 0, quantityDevolution: 0
         })
 
-        let keep = await  save(register)
+        let keep = await save(registers)
         return { "message": "Implemento guardado exitosamente" }
       }
 
@@ -41,12 +45,11 @@ let saveResource = async (req) => {
 let getAllResouces = async () => {
     let filter = {}
     let projection = '-_id -__v'
-
     let result = await find(resource, filter, projection)
     return result
 }
 
-
+/*
 function getByImplement(req, res) {
   implement.find({ typeImplement: req.body.typeImplement }, '-_id -__v', function (err, doc) {
     if (doc.length === 0) {
@@ -56,39 +59,42 @@ function getByImplement(req, res) {
     }
 
   })
-}
+}*/
 
-function decreaseImplement(req, res) {
-  implement.find({ typeImplement: req.body.typeImplement }, '-__v', function (err, doc) {
-    if (doc.length !== 0) {
+
+let decreaseImplement= async(req)=> {
+
+  let filter = { name: req.name }
+  let projection = '-__v'
+  let doc = await find(resource ,filter, projection)
+
+  if (doc.length !== 0) {
       let updateQuantity;
       let oldQuantity;
       oldQuantity = doc[0].quantity;
-      updateQuantity = parseInt(doc[0].quantity) - parseInt(req.body.quantity)
-      if (req.body.quantity < oldQuantity) {
-        implement.findOneAndUpdate({ _id: doc[0]._id }, { $set: { quantity: updateQuantity } }, function (err) {
-          res.send({ "message": `Cantidad de ${req.body.typeImplement} Actulizada` })
-        })
+      updateQuantity = parseInt(doc[0].quantity) - parseInt(req.quantity)
+      if (req.quantity < oldQuantity) {
+        let set = { $set: { quantity: updateQuantity } }
+        await update(resource, filter, set)
+        return { "message": `Cantidad de ${req.name} Actulizada` }
       }
       else {
-        res.send({ "message": `La cantidad de ${req.body.typeImplement} ingresada es invalida` })
+        return { "message": `La cantidad de ${req.name} ingresada es invalida` }
       }
+    }else{
+      return { "message": `Este implemento no existe en la base de datos` }
     }
-  })
-}
+  }
 
-function deleteImplement(req, res) {
-  implement.findOneAndRemove({typeImplement: req.params.typeImplement}, function(err) {
-      if (!err) {
-        res.send({ "message": "Implemento eliminado correctamente" });
-      }
-    });
+let deleteImplement = async (req) => {
+  let filter = { name : req.name, headquarters: req.headquarters}
+  await remove(resource, filter)
+  return { "message": "Implemento eliminado correctamente" }
 };
 
 module.exports = { // Exporta todos los metodos
   saveResource,
   getAllResouces,
-  deleteImplement: deleteImplement,
-  getByImplement: getByImplement,
-  decreaseImplement : decreaseImplement
+  deleteImplement,
+  decreaseImplement
 }

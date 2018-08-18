@@ -16,7 +16,7 @@ let loanSchemaJSON = {
       type: String, 
       required: true 
     },
-    typeImplement: { 
+    typeResource: { 
       type: String, 
       required: true 
     },

@@ -1,9 +1,11 @@
 
 let save = async (object) => {
-    let query = object.save((err, success) => {
-        if (err) console.log(err);
+    return new Promise((resolve, reject)=>{
+        object.save((err, success) => {
+            if (err) reject(err)
+            if (success) resolve(success)
+        })
     })
-    return query.exec()
 }
 
 let find = (object, filter, projection) => {
@@ -13,16 +15,29 @@ let find = (object, filter, projection) => {
     return projection ? query.select(projection).exec() : query.exec()
 }
 
-let update = (object, name) => {
-    let query = object.findOneAndUpdate({ name: name }, { $set: { quantityDevolution: doc[0].quantityDevolution + 1 } },(err) => {
-        if (err) console.log(err);
+let update = (object, filter, set) => {
+    return new Promise((resolve, reject)=>{
+        object.findOneAndUpdate(filter, set,(err, success) => {
+            if (err) reject(err)
+            if (success) resolve(success)
+        })
     })
-    return query.exec()
 }
+
+let remove = (object, filter) => {
+    return new Promise((resolve, reject)=>{
+        object.findOneAndRemove(filter,(err, success) => {
+            if (err) reject(err)
+            if (success) resolve(success)
+        })
+    })
+}
+
 
 module.exports = {
     save,
     find,
-    update
+    update, 
+    remove
 }
 

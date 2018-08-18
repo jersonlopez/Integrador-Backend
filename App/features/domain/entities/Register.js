@@ -4,7 +4,7 @@ let mongoose = require('mongoose')  // mongoose es algo que nos permite facilida
 let schema = mongoose.Schema    // se defina una variable Schema
 
 let registerSchemaJSON = { 
-    typeImplement: String,
+    resource: String,
     quantityLoan: Number,
     quantityDevolution: Number
   }

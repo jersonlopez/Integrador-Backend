@@ -4,9 +4,9 @@ let mongoose = require('mongoose')
 let schema = mongoose.Schema   
 
 let resourceSchemaJSON = { // estructura del esquema, en formato json, excelente para nodo porque json surge de js y node esta basado en js
-    typeResource: {
+    headquarters: {
       type: String,
-      required: false
+      required: true
     },
     name:{
         type:String,
