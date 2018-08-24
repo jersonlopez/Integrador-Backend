@@ -4,9 +4,18 @@ let mongoose = require('mongoose')  // mongoose es algo que nos permite facilida
 let schema = mongoose.Schema    // se defina una variable Schema
 
 let registerSchemaJSON = { 
-    resource: String,
-    quantityLoan: Number,
-    quantityDevolution: Number
+    resource: {
+        type: String,
+        required: true
+    },
+    quantityLoan: {
+        type: Number,
+        required: true
+    },
+    quantityDevolution: {
+        type: Number,
+        required: true
+    }
   }
 
   let registerSchema = new schema(registerSchemaJSON)  // Creacion del esquema como tal

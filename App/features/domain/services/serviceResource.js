@@ -19,24 +19,20 @@ let saveResource = async (req) => {
         let filterUpdate = { _id: doc[0]._id }
         let set = { $set: { quantity: updateQuantity } }
   
-        let upgrade = update(resource ,filterUpdate, set)
+        update(resource ,filterUpdate, set)
         return { "message": `Cantidad de ${req.name} Actulizada` }
       } else {
         let resources = new resource({
           headquarters: req.headquarters, name: req.name, quantity: req.quantity
           })
 
-        let keepResource =await save(resources) 
-        
-        console.log("#############################\n")
-        console.log(keepResource)
-        console.log("\n#############################\n")
+        await save(resources) 
 
         let registers = new register({
           resource: req.name, quantityLoan: 0, quantityDevolution: 0
         })
 
-        let keep = await save(registers)
+        await save(registers)
         return { "message": "Implemento guardado exitosamente" }
       }
 

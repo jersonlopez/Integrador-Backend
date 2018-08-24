@@ -1,4 +1,5 @@
 /* jshint esversion: 6 */
+
 let mongoose = require('mongoose')  // mongoose es algo que nos permite facilidad a la hora de manejar esquemas y hacer consultar
 let schema = mongoose.Schema    // se defina una variable Schema
 
