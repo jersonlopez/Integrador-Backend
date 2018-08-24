@@ -7,7 +7,7 @@ let save = async (req, res) => {
     res.send(await saveDevolution(data))
 }
 
-let getAll = async(res) => {
+let getAll = async(req, res) => {
     res.send(await getAllDevolution())
 }
 
