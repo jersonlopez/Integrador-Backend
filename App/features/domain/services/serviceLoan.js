@@ -41,7 +41,7 @@ let getSanction = async (req) => {
 
 let saveLoan = async (req) => {
 
-  let filter = { name: req.name }
+  let filter = { name: req.typeResource }
   let projection = '-__v'
   let doc1 = await find(resource, filter, projection)
 
@@ -55,7 +55,7 @@ let saveLoan = async (req) => {
       id: studentData.id,
       state: "Activo",
       name: studentData.name,
-      typeResource: req.name,
+      typeResource: req.typeResource,
       faculty: studentData.faculty,
       phone: studentData.phone,
       attendant: req.attendant,
