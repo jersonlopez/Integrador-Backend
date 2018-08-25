@@ -28,7 +28,7 @@ let saveResource = async (req) => {
         await save(resources) 
 
         let registers = new register({
-          resource: req.name, quantityLoan: 0, quantityDevolution: 0
+          resource: req.name, headquarters:req.headquarters, quantityLoan: 0, quantityDevolution: 0
         })
 
         await save(registers)
