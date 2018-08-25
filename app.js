@@ -12,3 +12,5 @@ app.listen(app.get('port'), () => {
 
 schedule
 db
+
+module.exports = app;
