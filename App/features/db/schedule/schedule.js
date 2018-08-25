@@ -1,19 +1,21 @@
-let scheduleInstance = require('node-schedule');
+'use strict'
 
-let modelDevolutionSportsOffices = require('../sportOffice/devolution/model')
-let modelDevolutionPlayRoom = require('../playRoom/devolution/model')
+const scheduleInstance = require('node-schedule');
 
-let devolutionSportsOffices = modelDevolutionSportsOffices.getDevolution()
-let devolutionPlayRoom = modelDevolutionPlayRoom.getDevolution()
+let { devolution } = require('../../domain/entities/Devolution')
+let { save, update, find, remove } = require('../../domain/repository/crud')
 
 
-function getSanctionSportOffices() {
-    return devolutionSportsOffices.find({ timeSanction: { $gt: 0 } }, '-_id -__v -typeImplement -observation -attendant')
-        .exec().then((data) => {
-            return data
-        }).catch((err) => {
-            return { err: err }
-        })
+let getSanctionSportOffices = async () => {
+
+    let filter = { timeSanction: { $gt: 0 } }
+    let projection = '-_id -__v -typeImplement -observation -attendant'
+    return(await find(devolution, filter, projection)
+    .then((data) => {
+        return data
+    }).catch((err) => {
+        return { err: err }
+    }))
 };
 
 async function updateSanctionSportOffices() {
@@ -22,38 +24,14 @@ async function updateSanctionSportOffices() {
         if (array[i].timeSanction > 0) {
             let newSanction = array[i].timeSanction - 1
 
-            devolutionSportsOffices.findOneAndUpdate({ id: array[i].id }, { timeSanction: newSanction })
-                .exec().then((data) => {
-                    console.log("actualizado con exito ")
-                }).catch((err) => {
-                    return { err: err }
-                })
-
-        }
-    }
-}
-
-function getSanctionPlayRoom() {
-    return devolutionPlayRoom.find({ timeSanction: { $gt: 0 } }, '-_id -__v -typeImplement -observation -attendant')
-        .exec().then((data) => {
-            return data
-        }).catch((err) => {
-            return { err: err }
-        })
-};
-
-async function updateSanctionPlayRoom() {
-    let array = await getSanctionPlayRoom()
-    for (let i = 0; i <= array.length - 1; i++) {
-        if (array[i].timeSanction > 0) {
-            let newSanction = array[i].timeSanction - 1
-
-            devolutionPlayRoom.findOneAndUpdate({ id: array[i].id }, { timeSanction: newSanction })
-                .exec().then((data) => {
-                    console.log("actualizado con exito ")
-                }).catch((err) => {
-                    return { err: err }
-                })
+            let filter = { id: array[i].id }
+            let set = { timeSanction: newSanction }
+            return(await update(devolution, filter, set)
+            .then((data) => {
+                console.log("actualizado con exito ")
+            }).catch((err) => {
+                console.log("hubo un error actulizando las sanciones:\n ", err)
+            }))
 
         }
     }
@@ -69,7 +47,6 @@ function schedule() {
 
     let j = scheduleInstance.scheduleJob(rule, function () {
         updateSanctionSportOffices()
-        updateSanctionPlayRoom() 
     });
 
 }

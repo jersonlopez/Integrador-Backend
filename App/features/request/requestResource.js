@@ -7,7 +7,8 @@ let save = async (req, res) => {
 }
 
 let get = async (req, res) => {
-    res.send(await getAllResouces())
+    let data = req.params
+    res.send(await getAllResouces(data))
 }
 
 let update = async (req, res) => {
@@ -16,7 +17,7 @@ let update = async (req, res) => {
 }
 
 let remove = async (req, res) => {
-    let data = req.body
+    let data = req.body    
     res.send(await deleteImplement(data))
 }
 module.exports = {

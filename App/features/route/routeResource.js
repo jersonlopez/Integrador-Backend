@@ -9,7 +9,7 @@ router.route('/sports/items/')
     save(...args)
 })
 
-router.route('/sports/items/')
+router.route('/sports/items/:headquarters')
   .get((...args) => {
     get(...args)
 })
