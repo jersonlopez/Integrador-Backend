@@ -1,15 +1,13 @@
-const express = require('express')
-
-const {schedule} = require("./App/features/db/schedule/schedule")
-const {db} = require("./conection")
-
-let app = new express()
+const { schedule } = require("./App/features/db/schedule/schedule")
+const { db } = require("./conection")
 
 
-require('./server')(app)
+let app = require('./server')
+
+require('http').Server(app)
 
 app.listen(app.get('port'), () => {
-  console.log(`It's the best app... ${app.get('port')}`)
+    console.log(`It's the best app... ${app.get('port')}`)
 })
 
 schedule
