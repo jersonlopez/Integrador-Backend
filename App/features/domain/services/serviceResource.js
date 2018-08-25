@@ -5,12 +5,11 @@ let {register} = require('../entities/Register')
 let {save, update, find, remove} = require('../repository/crud')
 
 let saveResource = async (req) => {
-    let filter = { name: req.name }
+    let filter = { name: req.name, headquarters: req.headquarters }
     let projection = '-__v'
     let doc = await find(resource ,filter, projection)
     
     if (doc.length !== 0) {
-      console.log("oe entre el if");
       
         let updateQuantity;
         updateQuantity = parseInt(doc[0].quantity) + parseInt(req.quantity)
@@ -38,8 +37,8 @@ let saveResource = async (req) => {
 
 };
 
-let getAllResouces = async () => {
-    let filter = {}
+let getAllResouces = async (req) => {
+    let filter = { headquarters: req.headquarters }
     let projection = '-_id -__v'
     let result = await find(resource, filter, projection)
     return result
@@ -60,7 +59,7 @@ function getByImplement(req, res) {
 
 let decreaseImplement= async(req)=> {
 
-  let filter = { name: req.name }
+  let filter = { name: req.name, headquarters: req.headquarters }
   let projection = '-__v'
   let doc = await find(resource ,filter, projection)
 
