@@ -8,6 +8,10 @@ let loanSchemaJSON = {
       type: String, 
       required: true
     },
+    headquarters :{
+      type:String,
+      require,
+    },
     state: { 
       type: String, 
       required: true

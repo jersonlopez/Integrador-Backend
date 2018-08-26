@@ -12,17 +12,20 @@ let save = async (req, res) => {
 }
 
 let getAll = async(req, res) => {
-    res.send(await getAllLoan())
+    let data = req.params
+    res.send(await getAllLoan(data))
 }
 
 
 let getAllActive = async(req, res) => {
-    res.send(await getActualLoans())
+    let data = req.params
+    res.send(await getActualLoans(data))
 
 }
 
 let getLatest = async(req, res) => {
-    res.send(await getLatestLoans())
+    let data = req.params
+    res.send(await getLatestLoans(data))
 
 }
 module.exports = {

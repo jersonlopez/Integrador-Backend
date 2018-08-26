@@ -2,7 +2,8 @@
 let { getAllRegister } = require('../domain/services/serviceRegister')
 
 let get = async (req, res) => {
-    res.send(await getAllRegister())
+    let data = req.params
+    res.send(await getAllRegister(data))
 }
 
 module.exports = {

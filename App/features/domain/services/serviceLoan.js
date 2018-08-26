@@ -41,10 +41,11 @@ let getSanction = async (req) => {
 
 let saveLoan = async (req) => {
 
-  let filter = { name: req.name }
+  let filter = { name: req.typeResource }
   let projection = '-__v'
   let doc1 = await find(resource, filter, projection)
-
+  console.log(doc1);
+  
   if (doc1[0].quantity < req.quantity) {
     return ({ "message": "No hay implementos disponibles en este momento" })
   } else {
@@ -53,9 +54,10 @@ let saveLoan = async (req) => {
 
     let newLoan = new loan({
       id: studentData.id,
+      headquarters : req.headquarters,
       state: "Activo",
       name: studentData.name,
-      typeResource: req.name,
+      typeResource: req.typeResource,
       faculty: studentData.faculty,
       phone: studentData.phone,
       attendant: req.attendant,
@@ -66,7 +68,7 @@ let saveLoan = async (req) => {
     
     await save(newLoan)
 
-    let registerFilter = { resource : req.name }
+    let registerFilter = { resource : req.typeResource }
     let doc = await find(register, registerFilter, projection)
     
     let filter1 = { _id: doc[doc.length - 1]._id }
@@ -78,28 +80,28 @@ let saveLoan = async (req) => {
 };
 
 
-let getAllLoan = async ()=> {
-  let filter = {}
+let getAllLoan = async (req)=> {
+  let filter = { headquarters: req.headquarters }
   let projection = '-_id -__v'
   let result = await find(loan, filter, projection)
   return result
 };
 
 
-let getActualLoans = async() => {
-  let filter = { state: "Activo" }
+let getActualLoans = async(req) => {
+  let filter = { headquarters: req.headquarters, state: "Activo" }
   let projection = '-_id -__v'
   let result = await find(loan, filter, projection)
   return result
 };
 
-let getLatestLoans = async() => {
-  let filter = {}
+let getLatestLoans = async(req) => {
+  let filter = {headquarters: req.headquarters}
   let projection = '-_id -__v'
   let doc = await find(loan, filter, projection)
 
   let i, j, k;
-  if (doc.length > 10) {
+  if (doc.length > 5) {
     i = doc.length - 10
   } else {
     i = 0

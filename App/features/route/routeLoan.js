@@ -14,18 +14,18 @@ router.route('/sports/loans/')
     save(...args)
 })
 
-router.route('/sports/loans/')
+router.route('/sports/loans/:headquarters')
   .get((...args) => {
     getAll(...args)
 })
 
-router.route('/sports/activeLoans/')
+router.route('/sports/activeLoans/:headquarters')
   .get((...args) => {
     getAllActive(...args)
 })
 
 
-router.route('/sports/latestLoans/')
+router.route('/sports/latestLoans/:headquarters')
   .get((...args) => {
     getLatest(...args)
 })

@@ -8,6 +8,10 @@ let registerSchemaJSON = {
         type: String,
         required: true
     },
+    headquarters:{
+        type: String,
+        required: true
+    },
     quantityLoan: {
         type: Number,
         required: true
