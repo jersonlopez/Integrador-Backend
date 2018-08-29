@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
+let config = require('config')
 
-let url = 'mongodb://system:root@ds229458.mlab.com:29458/prestemosudea'
+let url = config.DBHost
 
 mongoose.connection.on('error', (err) => {
   if (err) {
@@ -10,15 +11,6 @@ mongoose.connection.on('error', (err) => {
   }
 })
 
-/* mongoose.connection.on('connected', function () {  
-  console.log('Mongoose default connection open');
-}); 
-  
-// When the connection is disconnected
-mongoose.connection.on('disconnected', function () {  
-  console.log('Mongoose default connection disconnected'); 
-}); */
-
-let moon = mongoose.connect(url)
+let moon = mongoose.connect(url, { useNewUrlParser: true })
 
 exports = moon
