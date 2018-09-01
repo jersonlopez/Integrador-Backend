@@ -3,7 +3,10 @@ let {getSanction, saveLoan, getAllLoan, getActualLoans, getLatestLoans} = requir
 
 let getSan = async (req, res) => {
     let data = req.body
-    res.send(await getSanction(data))
+    console.log(data)
+    let result = await getSanction(data)
+    console.log(result)
+    res.send(result)
 }
 
 let save = async (req, res) => {

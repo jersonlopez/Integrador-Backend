@@ -9,7 +9,8 @@ let studentData
 
 let getSanction = async (req) => {
   await studentInformation(req.id).then((data) => {
-    if (data.data.length == 0) {
+    if (data.data.length === 0) {
+      console.log(data.data.length)
       return ({ "message": "Por favor ingrese una cedula valida" })
     } else {
       studentData = {
@@ -99,10 +100,10 @@ let getLatestLoans = async(req) => {
   let filter = {headquarters: req.headquarters}
   let projection = '-_id -__v'
   let doc = await find(loan, filter, projection)
-
+  
   let i, j, k;
   if (doc.length > 5) {
-    i = doc.length - 10
+    i = doc.length - 5
   } else {
     i = 0
   }
@@ -114,7 +115,7 @@ let getLatestLoans = async(req) => {
     while (j < doc.length) {
       if (doc.length == 0) {
         return(registerRecord)
-      } else if (doc[i].typeImplement === doc[j].typeImplement) {
+      } else if (doc[i].typeResource === doc[j].typeResource) {
         quantityImplement = quantityImplement + 1;
       }
       j = j + 1;
@@ -122,13 +123,13 @@ let getLatestLoans = async(req) => {
     let ban = true;
     k = 0;
     while (k < registerRecord.length) {
-      if (registerRecord[k].typeImplement === doc[i].typeImplement) {
+      if (registerRecord[k].typeImplement === doc[i].typeResource) {
         ban = false;
       }
       k = k + 1;
     }
     if (ban) {
-      registerRecord.push({ typeImplement: doc[i].typeImplement, quantity: quantityImplement })
+      registerRecord.push({ typeImplement: doc[i].typeResource, quantity: quantityImplement })
     }
     quantityImplement = 0;
     i = i + 1;

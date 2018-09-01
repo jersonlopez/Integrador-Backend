@@ -8,7 +8,8 @@ let save = async (req, res) => {
 }
 
 let getAll = async(req, res) => {
-    res.send(await getAllDevolution())
+    let data = req.params
+    res.send(await getAllDevolution(data))
 }
 
 module.exports = {

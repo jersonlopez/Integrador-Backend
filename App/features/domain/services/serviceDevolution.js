@@ -61,7 +61,8 @@ let saveDevolution = async (req) => {
 
   let newDevolution = new devolution({
     id: req.id, 
-    typeResource: req.typeResource, 
+    typeResource: req.typeResource,
+    headquarters : req.headquarters, 
     attendant: req.attendant,
     loanDate: loanDate, 
     timeSanction: sanction, 
@@ -85,8 +86,8 @@ let saveDevolution = async (req) => {
   }
 };
 
-let getAllDevolution = async () => {
-    let filter = {}
+let getAllDevolution = async (req) => {
+    let filter = {headquarters: req.headquarters}
     let projection = '-_id -__v'
     let result = await find(devolution, filter, projection)
     return(result)

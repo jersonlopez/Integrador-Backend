@@ -8,6 +8,10 @@ let devolutionSchemaJSON = {
       type: String, 
       required: true
     },
+    headquarters :{
+      type:String,
+      require,
+    },
     typeResource: { 
       type: String, 
       required: true 

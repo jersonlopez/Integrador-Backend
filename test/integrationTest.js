@@ -13,6 +13,15 @@ let { save, find } = require('../App/features/domain/repository/crud')
 
 chai.use(chaiHttp);
 
+//Our parent block
+describe.skip('Resources', () => {
+  beforeEach((done) => { //Before each test we empty the database
+      resource.remove({}, (err) => { 
+         done();           
+      });        
+  });
+});  
+
 /*
  * Test the /GET route
  */
@@ -26,7 +35,7 @@ describe('/GET /v1/sports/items/', () => {
   });
 });
 
-describe('/GET/v1/sports/items/:headquarters items', () => {
+describe('/GET /v1/sports/items/:headquarters items', () => {
   it('it should GET books by headquarters', async () => {
 
     let resources = new resource({ headquarters: "robledo", name: "balon", quantity: 5 })
@@ -50,5 +59,21 @@ describe('/GET/v1/sports/items/:headquarters items', () => {
         res.body.should.have.property('_id').eql(doc.id);
       });
     }  
+  });
+});
+
+
+
+describe('/POST /sports/items/ items', () => {
+  it.skip('it should POST a resource', async () => {
+
+    let resources = new resource({ headquarters: "robledo", name: "balon", quantity: 5 })
+
+    let result = await save(resources)
+    expect(result.body).to.deep.equal({});
+    
+    // const users = await result.json();
+    // expect(users).to.be.an('Array');
+    // expect(users.length).to.be.equal(1);
   });
 });
