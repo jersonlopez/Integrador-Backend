@@ -1,17 +1,17 @@
 const fs = require('fs');
 const readline = require('readline');
-const {google} = require('googleapis');
+const { google } = require('googleapis');
 
 const { rootPath } = require('../../../config')
 // If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
+const SCOPES = ['https://www.googleapis.com/auth/calendar'];
 const TOKEN_PATH = 'token.json';
 
 // Load client secrets from a local file.
 fs.readFile(rootPath + '/App/features/calendar/credentials.json', (err, content) => {
   if (err) return console.log('Error loading client secret file:', err);
   // Authorize a client with credentials, then call the Google Calendar API.
-  authorize(JSON.parse(content), listEvents);
+  authorize(JSON.parse(content), saveEvents);
 });
 
 /**
@@ -21,7 +21,7 @@ fs.readFile(rootPath + '/App/features/calendar/credentials.json', (err, content)
  * @param {function} callback The callback to call with the authorized client.
  */
 function authorize(credentials, callback) {
-  const {client_secret, client_id, redirect_uris} = credentials.installed;
+  const { client_secret, client_id, redirect_uris } = credentials.installed;
   const oAuth2Client = new google.auth.OAuth2(
       client_id, client_secret, redirect_uris[0]);
 
@@ -68,28 +68,75 @@ function getAccessToken(oAuth2Client, callback) {
  * Lists the next 10 events on the user's primary calendar.
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
-function listEvents(auth) {
+function saveEvents(auth) {
   const calendar = google.calendar({version: 'v3', auth});
-  calendar.events.list({
+
+  calendar.events.insert({
+    auth: auth,
     calendarId: 'primary',
-    timeMin: (new Date()).toISOString(),
-    maxResults: 10,
-    singleEvents: true,
-    orderBy: 'startTime',
-  }, (err, res) => {
-    if (err) return console.log('The API returned an error: ' + err);
-    const events = res.data.items;
-    if (events.length) {
-      console.log('Upcoming 10 events:');
-      events.map((event, i) => {
-        const start = event.start.dateTime || event.start.date;
-        console.log(`${start} - ${event.summary}`);
-      });
-    } else {
-      console.log('No upcoming events found.');
+    resource: event,
+  }, function(err, event) {
+    if (err) {
+      console.log('There was an error contacting the Calendar service: ' + err);
+      return;
     }
+    console.log('###################### events ####################\n')
+    console.log(event)
+    console.log('\n#######################################################\n')
+    //console.log('Event created: %s', event.htmlLink);
   });
 }
 
-//https://www.youtube.com/watch?v=Qd64idiKZWw
-//https://developers.google.com/calendar/create-events
+// https://www.youtube.com/watch?v=Qd64idiKZWw
+// https://developers.google.com/calendar/create-events
+// America/Bogota
+
+// var event = {
+//   'summary': 'Google I/O 2018',
+//   'description': 'A chance to hear more about Google\'s developer products.',
+//   'start': {
+//     'dateTime': '2018-09-14T11:00:00-05:00',
+//     'timeZone': 'America/Bogota',
+//   },
+//   'end': {
+//     'dateTime': '2018-09-14T12:00:00-05:00',
+//     'timeZone': 'America/Bogota',
+//   },
+//   'recurrence': [
+//     'RRULE:FREQ=DAILY;COUNT=2'
+//   ],
+//   'attendees': [
+//     {'email': 'johna.galeano@udea.edu.co'},
+//     {'email': 'sergioa.castrillon@udea.edu.co'},
+//   ],
+//   'reminders': {
+//     'useDefault': false,
+//     'overrides': [
+//       {'method': 'email', 'minutes': 24 * 60},
+//       {'method': 'popup', 'minutes': 10},
+//     ],
+//   },
+// };
+
+var event = {
+    'summary': 'Google I/O 2018',
+    'description': 'A chance to hear more about Google\'s developer products.',
+    'start': {
+      'dateTime': '2018-09-14T14:00:00-05:00',
+      'timeZone': 'America/Bogota',
+    },
+    'end': {
+      'dateTime': '2018-09-14T16:00:00-05:00',
+      'timeZone': 'America/Bogota',
+    },
+    'recurrence': [
+      'RRULE:FREQ=DAILY;COUNT=2'
+    ],
+    'reminders': {
+      'useDefault': false,
+      'overrides': [
+        {'method': 'email', 'minutes': 24 * 60},
+        {'method': 'popup', 'minutes': 10},
+      ],
+    },
+  };

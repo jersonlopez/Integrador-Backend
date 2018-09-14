@@ -1,7 +1,7 @@
 const { schedule } = require("./App/features/db/schedule/schedule")
 const { db } = require("./conection")
 
-const {} = require('./App/features/calendar/quickstart')
+const {} = require('./App/features/calendar/listEvent')
 
 
 let app = require('./server')
