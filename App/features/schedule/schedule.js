@@ -39,9 +39,9 @@ async function updateSanctionSportOffices() {
 
 
 function schedule() {
-    let rule = new schedule.RecurrenceRule();
+    let rule = new scheduleInstance.RecurrenceRule();
 
-    rule.dayOfWeek = [0, new schedule.Range(1, 5)];
+    rule.dayOfWeek = [0, new scheduleInstance.Range(1, 5)];
     rule.hour = 23;
     rule.minute = 0;
 

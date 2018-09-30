@@ -12,7 +12,7 @@ app.listen(app.get('port'), () => {
     console.log(`It's the best app... http://localhost:${app.get('port')}`)
 })
 
-schedule
+schedule()
 db
 
 module.exports = app;
