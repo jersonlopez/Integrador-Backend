@@ -1,6 +1,5 @@
 
 const axios = require('axios')
-const request = require('request');
 
 
 
@@ -26,7 +25,7 @@ async function studentInformation(req) {
   }
 }
 
-async function authenticacion(user, password) {
+async function authentication(user, password) {
   try {
     return await axios.post('http://lis.udea.edu.co/api/prod/validarusuariooidxcn', {
       usuario: user,
@@ -43,5 +42,5 @@ async function authenticacion(user, password) {
 module.exports = {
   facultyInformation,
   studentInformation,
-  authenticacion
+  authentication
 }

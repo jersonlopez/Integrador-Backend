@@ -2,8 +2,8 @@
 
 const scheduleInstance = require('node-schedule');
 
-let { devolution } = require('../../domain/entities/Devolution')
-let { save, update, find, remove } = require('../../domain/repository/crud')
+let { devolution } = require('../domain/entities/Devolution')
+let { update, find } = require('../domain/repository/crud')
 
 
 let getSanctionSportOffices = async () => {

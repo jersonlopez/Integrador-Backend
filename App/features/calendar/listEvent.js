@@ -5,7 +5,7 @@ const { google } = require('googleapis');
 const { rootPath } = require('../../../config')
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/calendar'];
-const TOKEN_PATH = 'token.json';
+const TOKEN_PATH = 'App/features/calendar/token.json';
 
 // Load client secrets from a local file.
 fs.readFile(rootPath + '/App/features/calendar/credentials.json', (err, content) => {
