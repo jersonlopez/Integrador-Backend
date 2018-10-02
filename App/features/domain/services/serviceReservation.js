@@ -99,7 +99,7 @@ function listEvents(auth) {
  * Insert a new event on the user's primary calendar.
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
-function saveEvents(auth) {
+function saveEvents(auth, event) {
   const calendar = google.calendar({ version: 'v3', auth });
 
   const options = {
@@ -119,25 +119,25 @@ function saveEvents(auth) {
   });
 }
 
-let event = {
-  summary: 'Google I/O 2018',
-  description: "A chance to hear more about Google's developer products.",
-  start: {
-    dateTime: '2018-09-29T13:00:00-05:00',
-    timeZone: 'America/Bogota'
-  },
-  end: {
-    dateTime: '2018-09-29T14:00:00-05:00',
-    timeZone: 'America/Bogota'
-  },
-  recurrence: ['RRULE:FREQ=DAILY;COUNT=2'],
-  reminders: {
-    useDefault: false,
-    overrides: [{ method: 'email', minutes: 24 * 60 }, { method: 'popup', minutes: 10 }]
-  }
-};
+// let event = {
+//   summary: 'Google I/O 2018',
+//   description: "A chance to hear more about Google's developer products.",
+//   start: {
+//     dateTime: '2018-09-29T13:00:00-05:00',
+//     timeZone: 'America/Bogota'
+//   },
+//   end: {
+//     dateTime: '2018-09-29T14:00:00-05:00',
+//     timeZone: 'America/Bogota'
+//   },
+//   recurrence: ['RRULE:FREQ=DAILY;COUNT=2'],
+//   reminders: {
+//     useDefault: false,
+//     overrides: [{ method: 'email', minutes: 24 * 60 }, { method: 'popup', minutes: 10 }]
+//   }
+// };
 
-const saveNewEvents = () => {
+const saveNewEvents = (event) => {
   // Load client secrets from a local file.
   return new Promise((resolve, reject) => {
     fs.readFile(rootPath + '/App/features/calendar/credentials.json', async (err, content) => {
@@ -153,7 +153,7 @@ const saveNewEvents = () => {
         getAccessToken(oAuth2Client);
         return;
       }
-      const result = await saveEvents(auth);
+      const result = await saveEvents(auth, event);
       console.log('###################### result ####################\n');
       console.log(result);
       console.log('\n#######################################################\n');

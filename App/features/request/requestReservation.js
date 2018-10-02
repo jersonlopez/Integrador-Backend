@@ -3,8 +3,9 @@
 const { getEvents, saveNewEvents } = require('../domain/services/serviceReservation')
 
 let save = async (req, res) => {
-    //let data = req.body
-    res.send(await saveNewEvents())
+    let data = req.body
+    console.log(data)
+    res.send(await saveNewEvents(data))
 }
 
 // let remove = async (req, res) => {

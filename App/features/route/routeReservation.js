@@ -4,7 +4,7 @@ const { save, get} = require('../request/requestReservation')
 
 let router = new Router()
 
-router.route('/reservations')
+router.route('/reservations/')
   .get((...args) => {
     get(...args)
   })
@@ -16,8 +16,8 @@ router.route('/reservations')
 // })
 
 
-router.route('/reservations/save')
-.get((...args) => {
+router.route('/reservations/')
+.post((...args) => {
   save(...args)
 })
 
