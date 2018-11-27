@@ -2,13 +2,19 @@ const Router = require('express').Router
 
 const { save, get} = require('../request/requestReservation')
 
+const {saveSpace } = require('../domain/services/try')
+
 let router = new Router()
 
-router.route('/reservations/')
-  .get((...args) => {
+router.route('/reservationsByDayBySpace/')
+  .post((...args) => {
     get(...args)
   })
 
+// router.route('/reservations/')
+//   .get((...args) => {
+//     saveSpace(...args)
+//   })
 
 // router.route('/login')
 // .post((...args) => {

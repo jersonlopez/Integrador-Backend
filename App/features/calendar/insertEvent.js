@@ -122,21 +122,3 @@ function saveEvents(auth) {
 //     ],
 //   },
 // };
-
-let event = {
-  summary: 'Google I/O 2018',
-  description: "A chance to hear more about Google's developer products.",
-  start: {
-    dateTime: '2018-09-29T13:00:00-05:00',
-    timeZone: 'America/Bogota'
-  },
-  end: {
-    dateTime: '2018-09-29T14:00:00-05:00',
-    timeZone: 'America/Bogota'
-  },
-  recurrence: ['RRULE:FREQ=DAILY;COUNT=2'],
-  reminders: {
-    useDefault: false,
-    overrides: [{ method: 'email', minutes: 24 * 60 }, { method: 'popup', minutes: 10 }]
-  }
-};

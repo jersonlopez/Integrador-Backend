@@ -8,10 +8,13 @@ let save = async (object) => {
     })
 }
 
-let find = (object, filter, projection) => {
+let find = (object, filter, projection, populate) => {
     let query = object.find(filter, projection, (err, success) => {
         if (err) console.log(err);
     })
+
+    if (populate) return projection ? query.populate(populate).select(projection).exec() : query.populate(populate).exec()
+    
     return projection ? query.select(projection).exec() : query.exec()
 }
 

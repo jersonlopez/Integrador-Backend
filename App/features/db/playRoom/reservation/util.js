@@ -62,7 +62,7 @@ async function sendReservation(req, res, until) {
     let newReservation = new reservation({
         id: studentData.id,
         name: studentData.name,
-        resevationDate: req.body.resevationDate,
+        reservationDate: req.body.reservationDate,
         typeConsole: req.body.typeConsole,
         phone: studentData.phone,
         hourIn: req.body.hourIn,
@@ -101,7 +101,7 @@ async function sendReservation(req, res, until) {
         let newReservation = new reservation({
             id: req.body.companion[i].id,
             name: studentData.name,
-            resevationDate: req.body.resevationDate,
+            reservationDate: req.body.reservationDate,
             typeConsole: req.body.typeConsole,
             phone: studentData.phone,
             hourIn: req.body.hourIn,

@@ -1,7 +1,5 @@
 const { schedule } = require('./App/features/schedule/schedule')
-const { db } = require("./conection")
-
-//const {saveEvents} = require('./App/features/calendar/listEvent')
+const { moon } = require("./conection")
 
 
 let app = require('./server')
@@ -13,6 +11,6 @@ app.listen(app.get('port'), () => {
 })
 
 schedule()
-db
+moon
 
 module.exports = app;

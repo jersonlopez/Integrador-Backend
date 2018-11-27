@@ -1,7 +1,7 @@
 /* jshint esversion: 6 */
 
 let reservationSchemaJSON = { // estructura del esquema, en formato json, excelente para nodo porque json surge de js y node esta basado en js
-    resevationDate: {
+    reservationDate: {
         type: String,
         required: true
     },

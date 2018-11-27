@@ -1,143 +1,17 @@
 'use strict';
 
-const fs = require('fs');
-const readline = require('readline');
-const { google } = require('googleapis');
+const fs = require('fs'),
+  { google } = require('googleapis');
 
-const { rootPath } = require('../../../../config');
-// If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/calendar'];
-const TOKEN_PATH = 'App/features/calendar/token.json';
+const { authorize, getAccessToken, listEvents, saveEvents } = require('../../calendar/calendar'),
+  { studentInformation, authentication } = require('../../consumptionMares/consumptionMares'),
+  { save, update, find, remove } = require('../repository/crud'),
+  { rootPath } = require('../../../../config');
 
-/**
- * Create an OAuth2 client with the given credentials, and then execute the
- * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
- */
-let authorize = async oAuth2Client => {
-  // Check if we have previously stored a token.
-  return new Promise((resolve, reject) => {
-    fs.readFile(TOKEN_PATH, (err, token) => {
-      if (token === undefined) {
-        resolve(token);
-        return;
-      }
-      oAuth2Client.setCredentials(JSON.parse(token));
-      resolve(oAuth2Client);
-    });
-  });
-};
 
-/**
- * Get and store new token after prompting for user authorization, and then
- * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
- */
-function getAccessToken(oAuth2Client) {
-  const authUrl = oAuth2Client.generateAuthUrl({
-    access_type: 'offline',
-    scope: SCOPES
-  });
-  console.log('Authorize this app by visiting this url:', authUrl);
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  });
-  return new Promise((resolve, reject) => {
-    rl.question('Enter the code from that page here: ', code => {
-      rl.close();
-      oAuth2Client.getToken(code, (err, token) => {
-        if (err) return console.error('Error retrieving access token', err);
-        oAuth2Client.setCredentials(token);
-        // Store the token to disk for later program executions
-        fs.writeFile(TOKEN_PATH, JSON.stringify(token), err => {
-          if (err) console.error(err);
-          console.log('Token stored to', TOKEN_PATH);
-        });
-        resolve(oAuth2Client);
-      });
-    });
-  });
-}
+const { reservation } = require('../entities/Reservation');
 
-/**
- * Lists the next 10 events on the user's primary calendar.
- * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
- */
-function listEvents(auth) {
-  const calendar = google.calendar({ version: 'v3', auth });
-
-  const options = {
-    calendarId: 'primary',
-    timeMin: new Date().toISOString(),
-    maxResults: 10,
-    singleEvents: true,
-    orderBy: 'startTime'
-  };
-
-  return new Promise((resolve, reject) => {
-    calendar.events.list(options, (err, res) => {
-      if (err) {
-        reject('The API returned an error: ' + err);
-        return;
-      }
-      const events = res.data.items;
-      if (events.length) {
-        console.log('Upcoming 10 events:');
-        events.map(event => {
-          const start = event.start.dateTime || event.start.date;
-          const end = event.end.dateTime || event.end.date;
-          console.log(`${start} - ${end} - ${event.summary}`);
-        });
-      } else {
-        console.log('No upcoming events found.');
-      }
-      if (res.data.items) resolve(res.data.items);
-    });
-  });
-}
-
-/**
- * Insert a new event on the user's primary calendar.
- * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
- */
-function saveEvents(auth, event) {
-  const calendar = google.calendar({ version: 'v3', auth });
-
-  const options = {
-    auth: auth,
-    calendarId: 'primary',
-    resource: event
-  };
-
-  return new Promise((resolve, reject) => {
-    calendar.events.insert(options, function(err, event) {
-      if (err) {
-        reject('There was an error contacting the Calendar service: ' + err);
-        return;
-      }
-      resolve(event.data);
-    });
-  });
-}
-
-// let event = {
-//   summary: 'Google I/O 2018',
-//   description: "A chance to hear more about Google's developer products.",
-//   start: {
-//     dateTime: '2018-09-29T13:00:00-05:00',
-//     timeZone: 'America/Bogota'
-//   },
-//   end: {
-//     dateTime: '2018-09-29T14:00:00-05:00',
-//     timeZone: 'America/Bogota'
-//   },
-//   recurrence: ['RRULE:FREQ=DAILY;COUNT=2'],
-//   reminders: {
-//     useDefault: false,
-//     overrides: [{ method: 'email', minutes: 24 * 60 }, { method: 'popup', minutes: 10 }]
-//   }
-// };
-
-const saveNewEvents = (event) => {
+const saveNewEvents = (event, calendarId) => {
   // Load client secrets from a local file.
   return new Promise((resolve, reject) => {
     fs.readFile(rootPath + '/App/features/calendar/credentials.json', async (err, content) => {
@@ -153,16 +27,16 @@ const saveNewEvents = (event) => {
         getAccessToken(oAuth2Client);
         return;
       }
-      const result = await saveEvents(auth, event);
-      console.log('###################### result ####################\n');
+      const result = await saveEvents(auth, event, calendarId);
+      console.log('###################### result crear event ####################\n');
       console.log(result);
       console.log('\n#######################################################\n');
-      resolve(result)
-    //   if (result.length) {
-    //     resolve(result);
-    //   } else {
-    //     resolve('No upcoming events found.');
-    //   }
+      resolve(result);
+      //   if (result.length) {
+      //     resolve(result);
+      //   } else {
+      //     resolve('No upcoming events found.');
+      //   }
     });
   });
 };
@@ -200,7 +74,142 @@ const getEvents = () => {
   });
 };
 
+const deleteEvents = event => {
+  // Load client secrets from a local file.
+  return new Promise((resolve, reject) => {
+    fs.readFile(rootPath + '/App/features/calendar/credentials.json', async (err, content) => {
+      if (err) reject('Error loading client secret file: ' + err);
+      // Authorize a client with credentials, then call the Google Calendar API.
+      const credentials = JSON.parse(content);
+      const { client_secret, client_id, redirect_uris } = credentials.installed;
+      const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
+
+      const auth = await authorize(oAuth2Client);
+
+      if (auth === undefined) {
+        getAccessToken(oAuth2Client);
+        return;
+      }
+      const result = await saveEvents(auth, event);
+      console.log('###################### result ####################\n');
+      console.log(result);
+      console.log('\n#######################################################\n');
+      resolve(result);
+      //   if (result.length) {
+      //     resolve(result);
+      //   } else {
+      //     resolve('No upcoming events found.');
+      //   }
+    });
+  });
+};
+
+let studentData;
+
+const saveReservation = async (req) => {
+  let rule = 4 * 3600000
+  let until = new Date().getTime() + rule
+
+  await authentication(req.usuario, req.clave).then((data) => {
+
+      if (!!parseInt(data.data) == false) {
+          return ({ "message": "Usuario o Contraseña Incorrectos" })
+      } else {
+          if (parseInt(data.data) != parseInt(req.id)) {
+              return ({ "message": "No es usuario activo de la Universidad de Antioquia" })
+          } else {
+              studentData = {
+                  id: parseInt(data.data)
+              }
+          }
+      }
+  });
+
+  let filter = { id: req.id }
+  let projection = '-_id -__v -attendant -typeImplement -observation'
+  let doc = await find(reservation, filter, projection)
+
+  if (doc.length > 0) {
+    let rightNow = new Date().getTime()
+    let untilUser = doc[doc.length - 1].until
+    if (parseInt(rightNow) <= parseInt(untilUser)) {
+        return ({ "message": "Ya tiene una reserva agendada; no puede hacer más reservas" })
+    } else {
+        sendReservation(req, until)
+    }
+  } else {
+    sendReservation(req, until)
+  }
+
+}
+
+const sendReservation = async (req, until) => {
+  let i = 0;
+
+  await studentInformation(req.id).then((data) => {
+      studentData.name = data.data[0].nombre + " " + data.data[0].apellidos
+      studentData.phone = data.data[0].telefono
+      studentData.email = data.data[0].emailInstitucional
+  })
+
+  // let newReservation = new reservation({
+  //     id: studentData.id,
+  //     name: studentData.name,
+  //     reservationDate: req.body.reservationDate,
+  //     typeConsole: req.body.typeConsole,
+  //     phone: studentData.phone,
+  //     hourIn: req.body.hourIn,
+  //     controlQuantity: req.body.controlQuantity,
+  //     email: studentData.email,
+  //     videoGame: req.body.videoGame,
+  //     role: "Responsable",
+  //     until: until
+  // })
+
+  let newReservation = new reservation({
+    id: studentData.id,
+    name: studentData.name,
+    email: studentData.email,
+    phone: studentData.phone,
+    reservationDate: req.reservationDate,
+    hourStart: req.hourStart,
+    hourEnd: req.hourEnd,
+    headquarter: req.headquarter,
+    space: req.spaceName,
+    until: until,
+    event: req.event
+  })
+
+  let filter = { hourIn: req.hourStart, resevationDate: req.resevationDate }
+  let projection = '-_id -__v -name -id -phone'
+  let doc = await find(reservation, filter, projection)
+
+  if (doc.length > 0) {
+    return ({ "message": "Esta hora ya esta reservada" })
+  } else {            
+    await save(newReservation)
+    await saveNewEvents(req.event, req.calendarId)
+  }
+
+  return ({ "message": "RESERVACION GUARDADA" })
+}
+
+const getReservationByDayBySpace = async (req) => {
+  let filter = { headquarter: req.headquarter, space: req.space, reservationDate: req.dateIn }
+  let projection = '-_id -__v -name -phone -email -until'
+  let doc = await find(reservation, filter, projection)
+
+  if (doc.length > 0) {
+    return doc;
+  } else {
+      return ({ "message": "No hay reservas" })
+  }
+};
+
 module.exports = {
   getEvents,
-  saveNewEvents
+  saveNewEvents,
+  deleteEvents,
+  saveReservation,
+  getReservationByDayBySpace
 };

@@ -12,6 +12,4 @@ mongoose.connection.on('error', (err) => {
 })
 
 mongoose.set('useCreateIndex', true)
-let moon = mongoose.connect(url, { useNewUrlParser: true })
-
-exports = moon
+exports.moon = mongoose.connect(url, { useNewUrlParser: true })

@@ -1,8 +1,8 @@
 'use strict'
 
-let {resource} = require('../entities/Resource')
-let {register} = require('../entities/Register')
-let {save, update, find, remove} = require('../repository/crud')
+let { resource } = require('../entities/Resource')
+let { register } = require('../entities/Register')
+let { save, update, find, remove } = require('../repository/crud')
 
 let saveResource = async (req) => {
     let filter = { name: req.name, headquarters: req.headquarters }
