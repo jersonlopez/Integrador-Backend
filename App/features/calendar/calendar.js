@@ -104,6 +104,7 @@ exports.saveEvents = (auth, event, calendarId) => {
   const options = {
     auth: auth,
     calendarId: calendarId,
+    sendNotifications: true,
     resource: event
   };
 

@@ -135,10 +135,10 @@ const saveReservation = async (req) => {
     if (parseInt(rightNow) <= parseInt(untilUser)) {
         return ({ "message": "Ya tiene una reserva agendada; no puede hacer más reservas" })
     } else {
-        sendReservation(req, until)
+        return sendReservation(req, until)
     }
   } else {
-    sendReservation(req, until)
+    return sendReservation(req, until)
   }
 
 }
@@ -188,6 +188,9 @@ const sendReservation = async (req, until) => {
     return ({ "message": "Esta hora ya esta reservada" })
   } else {            
     await save(newReservation)
+
+    req.event.attendees.push({email: studentData.email})
+
     await saveNewEvents(req.event, req.calendarId)
   }
 

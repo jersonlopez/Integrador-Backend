@@ -10,7 +10,6 @@ const { saveReservation, getReservationByDayBySpace } = require('../domain/servi
 
 let save = async (req, res) => {
     const data = req.body
-    console.log(data)
     res.send(await saveReservation(data))
 }
 
