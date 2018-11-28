@@ -8,7 +8,7 @@ let { save, update, find, remove } = require('../repository/crud')
 exports.saveSpace = async (req, res) => {
 
     // let newHeadquarter = new headquarter({
-    //     direction: 'ciudadela',
+    //     direction: 'Salud Publica',
     //     phone : 2198523
     //   })
     
@@ -16,7 +16,7 @@ exports.saveSpace = async (req, res) => {
 
     // let newSpace = new space({
     //     headquarter: newHeadquarter,
-    //     name: 'piscina',
+    //     name: 'Plazoleta Central',
     //     quantity: 3
     //   })
 

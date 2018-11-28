@@ -11,10 +11,10 @@ router.route('/reservationsByDayBySpace/')
     get(...args)
   })
 
-// router.route('/reservations/')
-//   .get((...args) => {
-//     saveSpace(...args)
-//   })
+router.route('/reservations/saveSpace/')
+  .get((...args) => {
+    saveSpace(...args)
+  })
 
 // router.route('/login')
 // .post((...args) => {
